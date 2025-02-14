@@ -19,6 +19,7 @@
           "options": {
             "outputPath": "dist/kitchen-sink-3",
             "index": "src/index.html",
+            "baseHref": "/",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
@@ -35,11 +36,7 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "server": "src/main.server.ts"
           },
           "configurations": {
             "production": {
@@ -103,5 +100,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "b0de23c8-9894-4554-95d5-26a7caa58d30"
   }
 }

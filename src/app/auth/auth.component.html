@@ -1,0 +1,13 @@
+  <div class="auth-container">
+    <router-outlet></router-outlet> 
+    <p class="toggle-text" style="text-align: center;" *ngIf="!isAuthenticated()">
+      {{ isLoginPage() ? "Don't have an account?" : "Already have an account?" }}
+      <a [routerLink]="isLoginPage() ? '/register' : '/login'">
+        {{ isLoginPage() ? "Register" : "Login" }}
+      </a>
+    </p>
+
+     <div class="logout-container" style="text-align: center; margin-top: 20px;" *ngIf="isAuthenticated()">
+        <button class="logout-btn" (click)="logout()">Logout</button>
+      </div>
+  </div>

@@ -1,0 +1,41 @@
+<div class="home-container">
+    <h2>Welcome</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let member of members">
+                <td>
+                    <ng-container *ngIf="member.isEditing; else viewName">
+                        <input type="text" [(ngModel)]='member.name' />
+                    </ng-container>
+                    <ng-template #viewName>
+                        {{ member.name }}
+                    </ng-template>
+                </td>
+                <td>{{ member.email }}</td>
+                <td>
+                    <ng-container *ngIf="member.isEditing; else viewPhone">
+                        <input type="text" [(ngModel)]="member.phoneNumber" />
+                    </ng-container>
+                    <ng-template #viewPhone>
+                        {{ member.phoneNumber }}
+                    </ng-template>
+                </td>
+                <td>
+                    <button *ngIf="!member.isEditing" class="edit-btn" (click)="editMember(member)">Edit</button>
+                    <button *ngIf="member.isEditing" class="save-btn" (click)="saveMember(member)">Save</button>
+                    <button *ngIf="member.isEditing" class="cancel-btn" (click)="cancelEdit(member)">Cancel</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="members.length === 0" class="no-data">No members found.</div>
+</div>

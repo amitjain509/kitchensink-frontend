@@ -1,0 +1,52 @@
+<!-- register.component.html -->
+<div class="register-container">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <h2>Register</h2>
+      
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" formControlName="name" placeholder="Enter full name" />
+        <div class="error" *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid">
+          Name is required.
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" formControlName="email" placeholder="Enter email" />
+        <div class="error" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+          Enter a valid email address.
+        </div>
+        <div class="error" *ngIf="backendErrors?.email">
+            {{ backendErrors.email }}
+          </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number</label>
+        <input type="tel" id="phoneNumber" formControlName="phoneNumber" placeholder="Enter phone number" />
+        <div class="error" *ngIf="registerForm.get('phoneNumber')?.touched && registerForm.get('phoneNumber')?.invalid">
+            <span *ngIf="registerForm.get('phoneNumber')?.errors?.['required']">Phone number is required.</span>
+            <span *ngIf="registerForm.get('phoneNumber')?.errors?.['pattern']">Enter a valid Indian phone number.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" formControlName="password" placeholder="Enter password" />
+        <div class="error" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+          <span *ngIf="registerForm.get('password')?.errors?.['required']">Password is required.</span>
+          <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Minimum 8 characters required.</span>
+          <span *ngIf="registerForm.get('password')?.errors?.['pattern']">
+            Must contain an uppercase letter, a number, and a special character.
+          </span>
+        </div>
+      </div>
+
+      <div class="error" *ngIf="backendErrors?.message">
+        {{ backendErrors.message }}
+      </div>
+      <button type="submit" [disabled]="registerForm.invalid">Register</button>
+    </form>
+  </div>
+  

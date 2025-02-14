@@ -1,0 +1,21 @@
+.auth-container {
+    max-width: 100%;
+    margin: auto;
+    margin-top: 10%;
+  }
+  
+  .toggle-text {
+    margin-top: 15px;
+  }
+  
+  button {
+    background: none;
+    border: none;
+    color: #007BFF;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  button:hover {
+    text-decoration: underline;
+  }
+  
