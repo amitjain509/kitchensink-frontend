@@ -1,0 +1,81 @@
+<mat-card>
+    <mat-card-header>
+        <button style="margin-bottom: 2%; background-color: rgb(55, 55, 123); color: white;"
+            mat-raised-button color="primary" (click)="addUser()">Add User</button>
+    </mat-card-header>
+
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                    <ng-container *ngIf="editingIndex === i; else viewName">
+                        <mat-form-field appearance="outline">
+                            <input matInput [formControl]="$any(editForm).get('name')">
+                        </mat-form-field>
+                    </ng-container>
+                    <ng-template #viewName>
+                        {{ element.name }}
+                    </ng-template>
+                </td>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.email}}
+                </td>
+            </ng-container>
+
+            <!-- Phone Number Column -->
+            <ng-container matColumnDef="phoneNumber">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone Number </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.phoneNumber}}
+                </td>
+            </ng-container>
+
+            <!-- Active Column -->
+            <ng-container matColumnDef="active">
+                <th mat-header-cell *matHeaderCellDef> Active </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.active}}
+                </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                    <ng-container *ngIf="editingIndex === i; else actionButtons">
+                        <button mat-icon-button color="primary" (click)="saveUser(i)">
+                            <mat-icon>check</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="cancelEdit()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </ng-container>
+                    <ng-template #actionButtons>
+                        <button mat-icon-button color="accent" (click)="editUser(i, element)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="deleteUser(element)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </ng-template>
+                </td>
+            </ng-container>
+
+            <!-- Table Headers & Rows -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <!-- Paginator -->
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+        </mat-paginator>
+    </div>
+</mat-card>

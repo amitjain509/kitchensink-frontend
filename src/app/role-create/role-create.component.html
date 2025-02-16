@@ -1,0 +1,29 @@
+<div class="form-container">
+    <form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+            <mat-label>Role Name</mat-label>
+            <input matInput formControlName="roleName" />
+            <mat-error *ngIf="roleForm.get('roleName')?.hasError('required')">
+                Role Name is required.
+            </mat-error>
+            <mat-error *ngIf="roleForm.get('roleName')?.hasError('pattern')">
+                Role Name must contain only alphabets and spaces.
+            </mat-error>
+            <mat-error *ngIf="roleForm.get('roleName')?.hasError('maxlength')">
+                Role Name must not exceed 20 characters length
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+            <mat-error *ngIf="roleForm.get('description')?.hasError('required')">
+                Description is required.
+            </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="roleForm.invalid">
+            Submit
+        </button>
+    </form>
+</div>
