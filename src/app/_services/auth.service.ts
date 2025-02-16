@@ -9,8 +9,8 @@ import { UserData } from '../_models/userData.model';
 export class AuthService extends BaseService {
     private apiUrl = environment.apiUrl;
 
-    resetPassword(userId: string, password: Password) {
-        return this.patch(`${this.apiUrl}/users/${userId}`, password).pipe(
+    resetPassword(password: Password) {
+        return this.post(`${this.apiUrl}/auth/reset-password`, password).pipe(
             catchError(this.handleError)
         );
     }
@@ -30,13 +30,11 @@ export class AuthService extends BaseService {
         );
     }
 
-    reset(email: string, password: string) {
-        // Creating a mocked UserData object
-        const mockUserData: boolean = true;
-
-        // Return an observable of the mocked UserData
-        return of(mockUserData).pipe(
-            catchError(this.handleError)
-        );
-    }
+    getUserPermissions(): string[] {
+        const token = sessionStorage.getItem('token'); 
+        if (!token) return [];
+        
+        const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT
+        return payload.permissions || [];
+      }
 }

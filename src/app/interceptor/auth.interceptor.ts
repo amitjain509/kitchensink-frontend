@@ -1,24 +1,18 @@
-import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { inject } from '@angular/core';
+import { HttpInterceptorFn } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { AuthComponent } from '../auth/auth.component';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+    const router = inject(Router);
 
-    constructor(private router: Router, private authService: AuthComponent) { }
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
-        return next.handle(req).pipe(
-            catchError((error: HttpErrorResponse) => {
-                if (error.status === 401) {
-
-                    // this.authService.logout(); 
-                    this.router.navigate(['/login']); 
-                }
-                return throwError(() => new Error('An error occurred'));
-            })
-        );
-    }
-}
+    return next(req).pipe(
+        catchError((error) => {
+            if (error.status === 401) {
+                router.navigate(['/login']); // Redirect to login on 401
+            }
+            return throwError(() => new Error('An error occurred'));
+        })
+    );
+};

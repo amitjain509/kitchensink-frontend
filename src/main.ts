@@ -1,26 +1,18 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
-import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
-import { AuthInterceptor } from './app/interceptor/auth.interceptor';
-import { HeaderInterceptor } from './app/interceptor/header.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { materialProviders } from './material.provider';
+import { headerInterceptor } from './app/interceptor/header.interceptor';
+import { authInterceptor } from './app/interceptor/auth.interceptor';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([headerInterceptor, authInterceptor])),
     provideRouter(routes),
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS, 
-      useClass: HeaderInterceptor, multi: true
-    }, provideAnimationsAsync(), 
+     provideAnimationsAsync(), 
     materialProviders
   ]
 }).then(() => console.log('App Bootstrapped with HttpClient'))

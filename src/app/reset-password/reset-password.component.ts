@@ -53,8 +53,9 @@ export class ResetPasswordComponent {
     if (this.resetPasswordForm.valid) {
       const passwordData = this.resetPasswordForm.value;
       console.log('Resetting password with', passwordData);
+      passwordData.email = sessionStorage.getItem('email');
       
-      this.authService.resetPassword(passwordData.email, passwordData.newPassword)
+      this.authService.resetPassword(passwordData)
         .subscribe(() => {
           alert('Password reset successful! Please log in.');
           this.router.navigate(['/login']);

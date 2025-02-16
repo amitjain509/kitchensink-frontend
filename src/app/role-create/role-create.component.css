@@ -1,20 +1,15 @@
-.role-add form-container {
-    margin-top: 5%;
-    display: flex;
-}
-
-
-.role-add dialog-content {
-    margin-top: 50%;
+.role-dialog-content {
     display: flex;
     flex-direction: column;
-    gap: 4%;
-    width: 100%;
-    padding: 10%;
+    gap: 16px;
 }
 
-.role-add mat-form-field {
+mat-form-field {
     width: 100%;
-    gap: 4%;
-    margin-bottom: 16px;
+}
+
+.mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
 }

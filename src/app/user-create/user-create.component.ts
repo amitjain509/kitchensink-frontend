@@ -14,7 +14,6 @@ import { CommonModule } from '@angular/common';
 import { MatOptionModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-create',
@@ -39,6 +38,7 @@ export class UserCreateComponent {
   roles!: Role[];
   userTypes = ['MEMBER', 'USER'];
   dialogTitle: string = 'Add User';
+  currentUserType!: string;
 
   constructor(
     private fb: FormBuilder,
@@ -53,14 +53,13 @@ export class UserCreateComponent {
       name: ['', [Validators.required, Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.required, Validators.pattern('^(\\+91[\\s-]?)?[6-9]\\d{9}$')]],
-      role: ['', []],
-      userType: ['', Validators.required]
+      role: ['', []]
     });
 
     if (this.data) {
       this.dialogTitle = this.data == 'MEMBER' ? 'Add Member' : 'Add User';
+      this.currentUserType = this.data;
     }
-    // Fetch roles when the component is initialized
     this.loadRoles();
   }
 
@@ -78,6 +77,7 @@ export class UserCreateComponent {
   addUser(): void {
     if (this.userForm.valid) {
       const userData = this.userForm.value;
+      userData.userType = this.currentUserType;
       this.userService.createUser(userData).subscribe(
         (response) => {
           this.dialogRef.close(true);

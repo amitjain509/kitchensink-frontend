@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { User } from '../_models/user.model';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select'
@@ -45,18 +43,19 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       const userData = this.loginForm.value;
+      sessionStorage.setItem('email', userData.email);
       console.log('Logging in with', userData);
       
       this.authService.login(userData.email, userData.password)
         .subscribe(response => {
           sessionStorage.setItem('token', response.token);
-          sessionStorage.setItem('email', response.name);
+          sessionStorage.setItem('name', response.name);
           sessionStorage.setItem('permissions', JSON.stringify(response.permissions));
           
           if (response.passwordResetRequired) {
             this.router.navigate(['/reset-password']);
           } else {
-            this.router.navigate(['/home']);
+            this.router.navigate(['/menu']);
           }
         }, error => {
           console.error('Login failed', error);

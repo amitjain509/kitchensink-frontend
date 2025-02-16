@@ -3,11 +3,15 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { RoleService } from '../_services/role.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select'
+import { MatOptionModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-role',
@@ -17,13 +21,19 @@ import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
-    MatButtonModule
+    MatButtonModule,
+    MatOptionModule,
+    MatCardModule,
+    MatDialogModule,
+    MatIconModule,
+    MatSelectModule
   ],
   templateUrl: './role-create.component.html',
   styleUrl: './role-create.component.css',
 })
 export class RoleCreateComponent {
   roleForm: FormGroup;
+  dialogTitle: any;
 
   constructor(
     private fb: FormBuilder, 

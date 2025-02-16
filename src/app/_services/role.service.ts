@@ -27,4 +27,19 @@ export class RoleService extends BaseService {
             catchError(this.handleError)
         );
     }
+
+    getRoleById(roleId: string) {
+        return this.get<Role>(`${this.apiUrl}/roles/${roleId}`).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    assignPermissions(roleId:string, permissions: string[]) {
+        return this.put(`${this.apiUrl}/roles/${roleId}/assign-permissions`, {
+            roleId: roleId,
+            permissions: permissions
+        }).pipe(
+            catchError(this.handleError)
+        );
+    }
 }

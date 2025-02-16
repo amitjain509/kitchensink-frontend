@@ -20,7 +20,7 @@ import { MatIconModule } from "@angular/material/icon"
 import { MatSidenavModule } from "@angular/material/sidenav"
 import { MatListModule } from "@angular/material/list"
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { RoleService } from '../_services/role.service';
 import { Role } from '../_models/role.model';
@@ -66,7 +66,11 @@ export class RoleComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort !: MatSort;
 
-  constructor(private roleService: RoleService, private dialog: MatDialog) {
+  constructor(
+    private roleService: RoleService, 
+    private dialog: MatDialog,
+    private router: Router
+    ) {
 
   }
   ngOnInit(): void {
@@ -101,18 +105,6 @@ export class RoleComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openAssignPermissionDialog(role: Role): void {
-    const dialogRef = this.dialog.open(RolePermissionAssignComponent, {
-      width: "30%",
-      data: role
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.loadRoles();
-    });
-  }
-
   deleteRole(role: Role) {
     this.roleService.deleteRole(role).subscribe(res => {
      this.loadRoles();
@@ -120,6 +112,6 @@ export class RoleComponent implements OnInit, AfterViewInit {
   }
 
   assignPermission(role: Role) {
-    this.openAssignPermissionDialog(role)
+    this.router.navigate(['/role-assign']);
   }
 }

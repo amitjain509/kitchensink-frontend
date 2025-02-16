@@ -3,30 +3,55 @@
     <span class="example-spacer"></span>
     <button routerLink="input" mat-button>Input</button>
 </mat-toolbar>
-<mat-drawer-container autosize class="navigation-bar">
+<mat-drawer-container class="navigation-bar">
     <mat-drawer #drawer opened="true" mode="side" position="start">
-    <mat-nav-list>
-        <mat-list-item>
-            <button routerLink="" mat-button><mat-icon>home</mat-icon> Home</button>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item>
-            <button  (click)="navigateToUsers('USER')" mat-button><mat-icon>supervisor_account</mat-icon>Users</button>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item>
-            <button (click)="navigateToUsers('MEMBER')" mat-button><mat-icon>supervised_user_circle</mat-icon>Members</button>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item>
-            <button routerLink="roles" mat-button><mat-icon>security</mat-icon> Access Control</button>
-        </mat-list-item>
-    </mat-nav-list>
-    </mat-drawer>
+        <mat-nav-list>
+            <mat-list-item>
+                <button routerLink="" mat-button><mat-icon>home</mat-icon> Home</button>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item *ngIf="hasPermission('USER_CREATE') || hasPermission('USER_DELETE')">
+                <button (click)="navigateToUsers('USER')"
+                    mat-button><mat-icon>supervisor_account</mat-icon>Users</button>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item *ngIf="hasPermission('MEMBER_CREATE') || hasPermission('MEMBER_DELETE') || hasPermission('MEMBER_VIEW')">
+                <button (click)="navigateToUsers('MEMBER')"
+                    mat-button><mat-icon>supervised_user_circle</mat-icon>Members</button>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <!-- Access Control with Submenu -->
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <mat-icon>security</mat-icon> Access Control
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <mat-list>
+                    <mat-list-item>
+                        <button routerLink="roles" mat-button>Roles</button>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item>
+                        <button routerLink="role-permission-assign" mat-button>Permissions</button>
+                    </mat-list-item>
+                </mat-list>
+            </mat-expansion-panel>
+
+            <div class="logout-container">
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                    <button mat-button color="warn" (click)="logout()">
+                        <mat-icon>logout</mat-icon> Logout
+                    </button>
+                </mat-list-item>
+            </div>
+        </mat-nav-list>
+    </mat-drawer>   
     <mat-drawer-content>
         <div style="text-align: center;min-height: 600px;">
-
             <router-outlet></router-outlet>
-            </div>
+        </div>
     </mat-drawer-content>
 </mat-drawer-container>
