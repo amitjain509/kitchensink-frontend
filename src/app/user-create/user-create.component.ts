@@ -1,20 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RoleService } from '../_services/role.service';
 import { Role } from '../_models/role.model';
 import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 import { UserService } from '../_services/user.service';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ValidatorsService } from '../_services/validator.service';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select'
+import { MatSelectModule } from '@angular/material/select'
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatOptionModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-create',
@@ -37,6 +37,8 @@ import { MatIconModule } from '@angular/material/icon';
 export class UserCreateComponent {
   userForm: FormGroup;
   roles!: Role[];
+  userTypes = ['MEMBER', 'USER'];
+  dialogTitle: string = 'Add User';
 
   constructor(
     private fb: FormBuilder,
@@ -44,14 +46,20 @@ export class UserCreateComponent {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private userService: UserService,
+    private dialogRef: MatDialogRef<UserCreateComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.userForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.required, Validators.pattern('^(\\+91[\\s-]?)?[6-9]\\d{9}$')]],
-      role: ['', []]
+      role: ['', []],
+      userType: ['', Validators.required]
     });
 
+    if (this.data) {
+      this.dialogTitle = this.data == 'MEMBER' ? 'Add Member' : 'Add User';
+    }
     // Fetch roles when the component is initialized
     this.loadRoles();
   }
@@ -72,6 +80,7 @@ export class UserCreateComponent {
       const userData = this.userForm.value;
       this.userService.createUser(userData).subscribe(
         (response) => {
+          this.dialogRef.close(true);
           this.snackBar.open('User created successfully!', 'Close', { duration: 3000 });
         },
         (error) => {

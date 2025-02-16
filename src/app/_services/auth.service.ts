@@ -1,8 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { environment } from '../../environment/environment';
-import { catchError } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { BaseService } from './base.service';
 import { Password } from '../_models/password.model';
+import { UserData } from '../_models/userData.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService extends BaseService {
@@ -22,9 +23,19 @@ export class AuthService extends BaseService {
     }
 
     login(email: string, password: string) {
-        return this.post(`${this.apiUrl}/auth`, {
-            params: { email, password }
+        return this.post<UserData>(`${this.apiUrl}/auth/login`, {
+            email: email, password: password
         }).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    reset(email: string, password: string) {
+        // Creating a mocked UserData object
+        const mockUserData: boolean = true;
+
+        // Return an observable of the mocked UserData
+        return of(mockUserData).pipe(
             catchError(this.handleError)
         );
     }

@@ -1,0 +1,31 @@
+mat-card {
+  margin: 2%;
+  text-align: left;
+  width: 30%;
+  margin-left: 34%;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  margin-top: 15%;
+}
+
+.mat-mdc-form-field {
+  width: 98%; 
+}
+
+.mat-50 {
+  width: 48%;
+}
+
+.div-50 {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.mat-mdc-raised-button {
+  width: 50%;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}

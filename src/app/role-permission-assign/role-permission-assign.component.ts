@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { RoleService } from '../_services/role.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 
 @Component({
-  selector: 'app-role',
+  selector: 'app-role-permission-assign',
   standalone: true,
   imports: [
     CommonModule,
@@ -19,30 +19,31 @@ import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
     MatFormFieldModule,
     MatButtonModule
   ],
-  templateUrl: './role-create.component.html',
-  styleUrl: './role-create.component.css',
+  templateUrl: './role-permission-assign.component.html',
+  styleUrl: './role-permission-assign.component.css'
 })
-export class RoleCreateComponent {
-  roleForm: FormGroup;
+export class RolePermissionAssignComponent {
+  rolePermissionForm: FormGroup;
 
   constructor(
     private fb: FormBuilder, 
     private roleService: RoleService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private dialogRef: MatDialogRef<RoleCreateComponent>
+    private dialogRef: MatDialogRef<RolePermissionAssignComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
     ) {
-    this.roleForm = this.fb.group({
-      roleName: ['', [Validators.required, Validators.maxLength(20), Validators.pattern('^[a-zA-Z ]*$')]],
-      roleDescription: ['']
-    });
+      this.rolePermissionForm = this.fb.group({
+        roleName: [{ value: this.data?.roleName || '', disabled: true }],
+        roleDescription: [{ value: this.data?.roleDescription ?? 'AUTO_GENERATED', disabled: true }]
+      });
   }
 
-  addRole() {
-    if (this.roleForm.valid) {
-      const roleData = this.roleForm.value;
+  linkPermission() {
+    if (this.rolePermissionForm.valid) {
+      const roleData = this.rolePermissionForm.value;
 
-      this.roleService.createRole(roleData).subscribe(
+      this.roleService.delete(roleData).subscribe(
         (response) => {
           // Handle successful response
           this.dialogRef.close(true);

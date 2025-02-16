@@ -20,6 +20,7 @@ import {MatNativeDateModule} from "@angular/material/core"
 import {MatRadioModule} from "@angular/material/radio"
 import {MatCheckboxModule} from "@angular/material/checkbox"
 import {MatDialogModule} from "@angular/material/dialog"
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -51,4 +52,11 @@ import {MatDialogModule} from "@angular/material/dialog"
 })
 export class MenuComponent {
 
+  constructor(private router: Router) {
+
+  }
+
+  navigateToUsers(userType: string) {
+    this.router.navigate(['/users', userType]);
+  }
 }

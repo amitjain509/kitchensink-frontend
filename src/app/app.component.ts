@@ -1,15 +1,9 @@
-import { Component, ViewEncapsulation, inject, model, signal } from '@angular/core';
-import { HomeComponent } from './home/home.component';
-import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { UserCreateComponent } from './user-create/user-create.component';
-import { UserListComponent } from './user-list/user-list.component';
-import { MatDialog, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MenuComponent } from './menu/menu.component';
+import { MatDialogModule } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
+import { MenuComponent } from './menu/menu.component';
 
 @Component({
   selector: 'app-root',
@@ -17,10 +11,10 @@ import { RouterModule } from '@angular/router';
   imports: [
     MatToolbarModule,
     MatDialogModule,
-    MenuComponent,
     CommonModule,
+    MenuComponent,
     RouterModule
-  ],
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   encapsulation: ViewEncapsulation.None

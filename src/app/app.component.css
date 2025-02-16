@@ -8,9 +8,6 @@ mat-nav-list.mat-mdc-nav-list.mat-mdc-list-base.mdc-list.ng-tns-c2384444419-5 {
     align-content: normal;
     align-items: normal;
     align-self: auto;
-    alignment-baseline: auto;
-    /* ... (rest of the styles from the observation) ... */
-    -webkit-writing-mode: horizontal-tb;
   }
 
   html, body {

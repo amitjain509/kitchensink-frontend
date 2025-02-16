@@ -20,8 +20,8 @@ import { MatIconModule } from "@angular/material/icon"
 import { MatSidenavModule } from "@angular/material/sidenav"
 import { MatListModule } from "@angular/material/list"
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { UserService } from '../_services/user.service';
 import { User } from '../_models/user.model';
 import { UserCreateComponent } from '../user-create/user-create.component';
@@ -52,11 +52,11 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
     MatCheckboxModule,
     MatDialogModule,
     MatPaginatorModule,
-    MatFormFieldModule,
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
-  FormsModule],
+    MatSlideToggleModule,
+    FormsModule],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css'
 })
@@ -70,8 +70,13 @@ export class UserListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort !: MatSort;
   readonly dialog = inject(MatDialog);
+  userType: any;
 
-  constructor(private userService: UserService, private fb: FormBuilder) {
+  constructor(
+    private userService: UserService, 
+    private fb: FormBuilder,
+    private route: ActivatedRoute
+    ) {
     this.editForm = this.fb.group({
       name: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email])
@@ -79,15 +84,18 @@ export class UserListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.loadUsers();
+    this.route.paramMap.subscribe(params => {
+      this.userType = params.get('userType') || 'MEMBER';
+      this.loadUsers(this.userType);
+    });
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  loadUsers() {
-    this.userService.getAllUsers().subscribe(res => {
+  loadUsers(userType: string) {
+    this.userService.getAllUsers(userType).subscribe(res => {
       this.users = res;
       this.dataSource = new MatTableDataSource<User>(this.users);
       this.dataSource.paginator = this.paginator;
@@ -101,12 +109,13 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(UserCreateComponent, {
-      width: "30%"
+      width: "30%",
+      data: this.userType
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.loadUsers();
+      this.loadUsers(this.userType);
     });
   }
 
@@ -126,7 +135,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
         next: (response) => {
           this.users[index] = response; // Update UI with the saved data from the backend
           this.editingIndex = null;
-          this.loadUsers();
+          this.loadUsers(this.userType);
           console.log("User updated successfully:", response);
         },
         error: (err) => {
@@ -141,6 +150,38 @@ export class UserListComponent implements OnInit, AfterViewInit {
   }
 
   deleteUser(user: User) {
-    console.log("Delete User:", user);
+    this.userService.deleteUser(user.userId).subscribe({
+      next: (response) => {
+        this.loadUsers(this.userType);
+        console.log("User deleted successfully:", response);
+      },
+      error: (err) => {
+        console.error("Error deleting user:", err);
+      }
+    });
+  }
+
+  blockUnblockUser(index: number, user: User) {
+      if(user.active) {
+        this.userService.lockUser(user.userId).subscribe({
+          next: (response) => {
+            this.loadUsers(this.userType);
+            console.log("User updated successfully:", response);
+          },
+          error: (err) => {
+            console.error("Error updating user:", err);
+          }
+        });
+      } else {
+        this.userService.unlockUser(user.userId).subscribe({
+          next: (response) => {
+            this.loadUsers(this.userType);
+            console.log("User updated successfully:", response);
+          },
+          error: (err) => {
+            console.error("Error updating user:", err);
+          }
+        });
+      }
   }
 }

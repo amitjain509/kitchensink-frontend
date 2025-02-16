@@ -25,6 +25,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { RoleService } from '../_services/role.service';
 import { Role } from '../_models/role.model';
 import { RoleCreateComponent } from '../role-create/role-create.component';
+import { RolePermissionAssignComponent } from '../role-permission-assign/role-permission-assign.component';
 
 @Component({
   selector: 'app-role-create',
@@ -85,13 +86,25 @@ export class RoleComponent implements OnInit, AfterViewInit {
     });
   }
 
-  addUser() {
-    this.openDialog();
+  addRole() {
+    this.openRoleCreateDialog();
   }
 
-  openDialog(): void {
+  openRoleCreateDialog(): void {
     const dialogRef = this.dialog.open(RoleCreateComponent, {
       width: "30%"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.loadRoles();
+    });
+  }
+
+  openAssignPermissionDialog(role: Role): void {
+    const dialogRef = this.dialog.open(RolePermissionAssignComponent, {
+      width: "30%",
+      data: role
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -104,5 +117,9 @@ export class RoleComponent implements OnInit, AfterViewInit {
     this.roleService.deleteRole(role).subscribe(res => {
      this.loadRoles();
     });;
+  }
+
+  assignPermission(role: Role) {
+    this.openAssignPermissionDialog(role)
   }
 }

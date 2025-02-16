@@ -22,26 +22,32 @@ export class UserService extends BaseService {
         );
     }
 
-    getUserByEmail(email: string) {
-        return this.get(`${this.apiUrl}/${email}`).pipe(
+    deleteUser(userId: string) {
+        return this.delete<User>(`${this.apiUrl}/users/${userId}`).pipe(
             catchError(this.handleError)
         );
     }
 
-    getAllUsers() {
-        return this.get<User[]>(`${this.apiUrl}/users`).pipe(
+    getUserByEmail(email: string) {
+        return this.get(`${this.apiUrl}/users/${email}`).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    getAllUsers(userType: string) {
+        return this.get<User[]>(`${this.apiUrl}/users/userType/${userType}`).pipe(
             catchError(this.handleError)
         );
     }
 
     lockUser(userId: string) {
-        return this.patch(`${this.apiUrl}/${userId}/lock`, null).pipe(
+        return this.patch(`${this.apiUrl}/users/${userId}/lock`, null).pipe(
             catchError(this.handleError)
         );
     }
 
     unlockUser(userId: string) {
-        return this.patch(`${this.apiUrl}/${userId}/unlock`, null).pipe(
+        return this.patch(`${this.apiUrl}/users/${userId}/unlock`, null).pipe(
             catchError(this.handleError)
         );
     }
