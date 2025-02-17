@@ -24,10 +24,12 @@ import {MatDialogModule} from "@angular/material/dialog"
 import { Router } from '@angular/router';
 import { AuthService } from '../_services/auth.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-menu',
   imports: [
+    CommonModule,
     MatInputModule,
     MatSelectModule,
     MatAutocompleteModule,
@@ -63,16 +65,12 @@ export class MenuComponent {
   }
 
   logout() {
-    sessionStorage.removeItem('token'); // Clear session
+    sessionStorage.clear(); // Clear session
     this.router.navigate(['/login']);   // Redirect to login page
   }
 
   navigateToUsers(userType: string) {
     this.router.navigate(['/menu/users', userType]);
-  }
-
-  navigateTo(url: string) {
-    this.router.navigate(['/', url]);
   }
 
   hasPermission(permission: string): boolean {

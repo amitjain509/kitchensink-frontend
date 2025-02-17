@@ -54,9 +54,9 @@ export class LoginComponent {
           
           if (response.passwordResetRequired) {
             this.router.navigate(['/reset-password']);
-          } else {
+} else {
             this.router.navigate(['/menu']);
-          }
+          } 
         }, error => {
           console.error('Login failed', error);
           alert('Invalid username or password');

@@ -3,8 +3,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
-import { MenuComponent } from './menu/menu.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +11,6 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     MatToolbarModule,
     MatDialogModule,
     CommonModule,
-    // MenuComponent,
     RouterModule
 ],
   templateUrl: './app.component.html',

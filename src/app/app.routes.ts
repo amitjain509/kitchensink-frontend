@@ -4,17 +4,20 @@ import { RoleComponent } from './role/role.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { LoginComponent } from './login/login.component';
 import { MenuComponent } from './menu/menu.component';
-import { RolePermissionAssignComponent } from './role-permission-assign/role-permission-assign.component';
+import { PermissionAssignComponent } from './permission-assign/permission-assign.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const routes: Routes = [
-    { path: '**', redirectTo: 'login' },
+    { path: '**', redirectTo: 'login', pathMatch: 'full' },
     { path: '', component: LoginComponent },
-    { path: 'reset-password', component: ResetPasswordComponent },
-    { path: 'menu', component: MenuComponent, 
+    { path: 'reset-password', component: ResetPasswordComponent},
+    {
+        path: 'menu', component: MenuComponent,
         children: [
+            { path: 'profile', component: ProfileComponent },
             { path: 'users/:userType', component: UserListComponent },
             { path: 'roles', component: RoleComponent },
-            { path: 'role-permission-assign', component: RolePermissionAssignComponent }
+            { path: 'permission-assign', component: PermissionAssignComponent }
         ]
     },
 ];

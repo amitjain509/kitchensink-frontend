@@ -1,13 +1,11 @@
 <mat-toolbar color="primary" class="mat-elevation-z8">
     <span>Kitchensink Quickstart</span>
-    <span class="example-spacer"></span>
-    <button routerLink="input" mat-button>Input</button>
 </mat-toolbar>
 <mat-drawer-container class="navigation-bar">
     <mat-drawer #drawer opened="true" mode="side" position="start">
         <mat-nav-list>
             <mat-list-item>
-                <button routerLink="" mat-button><mat-icon>home</mat-icon> Home</button>
+                <button routerLink="profile" mat-button><mat-icon>home</mat-icon> Home</button>
             </mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item *ngIf="hasPermission('USER_CREATE') || hasPermission('USER_DELETE')">
@@ -15,7 +13,7 @@
                     mat-button><mat-icon>supervisor_account</mat-icon>Users</button>
             </mat-list-item>
             <mat-divider></mat-divider>
-            <mat-list-item *ngIf="hasPermission('MEMBER_CREATE') || hasPermission('MEMBER_DELETE') || hasPermission('MEMBER_VIEW')">
+            <mat-list-item>
                 <button (click)="navigateToUsers('MEMBER')"
                     mat-button><mat-icon>supervised_user_circle</mat-icon>Members</button>
             </mat-list-item>
@@ -34,7 +32,7 @@
                     </mat-list-item>
                     <mat-divider></mat-divider>
                     <mat-list-item>
-                        <button routerLink="role-permission-assign" mat-button>Permissions</button>
+                        <button routerLink="permission-assign" mat-button>Permissions</button>
                     </mat-list-item>
                 </mat-list>
             </mat-expansion-panel>
@@ -48,7 +46,7 @@
                 </mat-list-item>
             </div>
         </mat-nav-list>
-    </mat-drawer>   
+    </mat-drawer>
     <mat-drawer-content>
         <div style="text-align: center;min-height: 600px;">
             <router-outlet></router-outlet>

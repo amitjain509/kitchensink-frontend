@@ -18,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-role-permission-assign',
@@ -35,7 +36,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatCheckboxModule,
     MatDialogModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+    MatToolbarModule
   ],
   templateUrl: './role-permission-assign.component.html',
   styleUrl: './role-permission-assign.component.css'
@@ -71,6 +73,7 @@ export class RolePermissionAssignComponent implements OnInit, AfterViewInit {
       roles: ['']
     });
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
     this.permissionsArray = this.rolePermissionForm.get('permissions') as FormArray;
     this.loadRoles();
     this.loadPermissions();
@@ -97,7 +100,7 @@ export class RolePermissionAssignComponent implements OnInit, AfterViewInit {
   }
 
   updateCheckedPermissions(roleId: string): void {
-     this.roleService.getRoleById(roleId).subscribe(
+    this.roleService.getRoleById(roleId).subscribe(
       (role) => {
         const assignedPermissions = role ? role.permissions.map(p => p.id) : [];
         this.allPermissions.forEach((permission, index) => {
@@ -110,6 +113,8 @@ export class RolePermissionAssignComponent implements OnInit, AfterViewInit {
     );
 
     this.dataSource = new MatTableDataSource(this.allPermissions);
+    this.dataSource.paginator = this.paginator;  // Add this
+    this.dataSource.sort = this.sort;
     // Initially display all permissions
     this.initializePermissionsArray();
   }
@@ -118,7 +123,6 @@ export class RolePermissionAssignComponent implements OnInit, AfterViewInit {
     this.permissionService.getAllPermissions().subscribe(
       (permissions) => {
         this.allPermissions = permissions;
-        this.dataSource = new MatTableDataSource(this.allPermissions);
         // Initially display all permissions
         this.initializePermissionsArray();
       },

@@ -25,7 +25,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { RoleService } from '../_services/role.service';
 import { Role } from '../_models/role.model';
 import { RoleCreateComponent } from '../role-create/role-create.component';
-import { RolePermissionAssignComponent } from '../role-permission-assign/role-permission-assign.component';
 
 @Component({
   selector: 'app-role-create',
@@ -111,7 +110,7 @@ export class RoleComponent implements OnInit, AfterViewInit {
     });;
   }
 
-  assignPermission(role: Role) {
-    this.router.navigate(['/role-assign']);
+  navigateToAssignPermission() {
+    this.router.navigate(['/permission-assign']);
   }
 }

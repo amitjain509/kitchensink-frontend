@@ -1,0 +1,13 @@
+.save-button-container {
+    background-color: #004780;
+    color: white;
+    padding: 10px;
+}
+
+
+button[disabled] {
+    background-color: #b0bec5 !important;
+    color: black !important;
+    opacity: 1 !important;
+    cursor: not-allowed;
+  }

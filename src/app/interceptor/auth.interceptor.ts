@@ -10,6 +10,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req).pipe(
         catchError((error) => {
             if (error.status === 401) {
+                sessionStorage.clear();
                 router.navigate(['/login']); // Redirect to login on 401
             }
             return throwError(() => new Error('An error occurred'));

@@ -31,10 +31,19 @@ export class AuthService extends BaseService {
     }
 
     getUserPermissions(): string[] {
-        const token = sessionStorage.getItem('token'); 
+        const token = sessionStorage.getItem('token');
         if (!token) return [];
-        
+
         const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT
         return payload.permissions || [];
+    }
+
+    isAuthenticated(): boolean {
+        // Check if the session token exists in sessionStorage
+        return !!sessionStorage.getItem('token');
       }
+
+    getToken() {
+        return sessionStorage.getItem('token');
+    }
 }
