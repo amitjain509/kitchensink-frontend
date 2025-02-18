@@ -38,6 +38,7 @@ export class UserCreateComponent {
   roles!: Role[];
   userTypes = ['MEMBER', 'USER'];
   dialogTitle: string = 'Add User';
+  submitted: boolean = false;
   currentUserType!: string;
 
   constructor(
@@ -50,10 +51,10 @@ export class UserCreateComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.userForm = this.fb.group({
-      name: ['', [Validators.required, Validators.maxLength(50)]],
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern('^(\\+91[\\s-]?)?[6-9]\\d{9}$')]],
-      role: ['', []]
+      name: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[A-Za-z][a-z]*(\\s[A-Za-z][a-z]*)*$')]],
+      email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{3,}([._%+-][a-zA-Z0-9]+)*@[a-zA-Z0-9.-]{4,}\.[a-zA-Z]{2,}$')]],
+      phoneNumber: ['', [Validators.required, Validators.pattern('^([\\s-]?)?[6-9]\\d{9}$')]],
+      role: ['', [Validators.required]]
     });
 
     if (this.data) {
@@ -75,6 +76,13 @@ export class UserCreateComponent {
   }
 
   addUser(): void {
+    this.submitted = true;
+    Object.keys(this.userForm.controls).forEach(key => {
+      const control = this.userForm.get(key);
+      if (control) {
+        control.markAsTouched();
+      }
+    });
     if (this.userForm.valid) {
       const userData = this.userForm.value;
       userData.userType = this.currentUserType;

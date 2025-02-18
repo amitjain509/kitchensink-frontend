@@ -1,1 +1,20 @@
-<p></p>
+
+<mat-card appearance="outlined">
+    <mat-toolbar color="primary" class="header-bar" style="background-color: #004780; color: white;">
+        <span>Basic Info</span>
+    </mat-toolbar>
+    <div style="margin-top: 2%;"></div>
+
+     <!-- Profile Image Container -->
+     <div class="profile-container">
+        <img mat-card-image round-circle src="https://fastly.picsum.photos/id/737/200/200.jpg?hmac=YPktyFzukhcmeW3VgULbam5iZTWOMXfwf6WIBPpJD50" alt="Profile image">
+     </div>
+
+    <mat-card-header>
+      <mat-card-title> {{userData.email}}</mat-card-title>
+      <mat-card-subtitle>{{userData.name}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+     
+    </mat-card-actions>
+  </mat-card>

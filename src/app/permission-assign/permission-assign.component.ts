@@ -17,6 +17,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-permission-assign',
@@ -135,6 +136,19 @@ export class PermissionAssignComponent implements OnInit, AfterViewInit {
     this.permissionsTableData.forEach(permission => {
       if (permission.isAssigned) {
         this.selection.select(permission);
+      }
+    });
+  }
+
+  savePermission() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: { message: `Are you sure you want to save permissions?` }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+       this.linkPermission();
       }
     });
   }

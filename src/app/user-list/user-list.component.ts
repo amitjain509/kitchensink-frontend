@@ -26,6 +26,7 @@ import { UserService } from '../_services/user.service';
 import { User } from '../_models/user.model';
 import { UserCreateComponent } from '../user-create/user-create.component';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-user-list',
@@ -61,7 +62,7 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
   styleUrl: './user-list.component.css'
 })
 export class UserListComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['name', 'email', 'phoneNumber', 'active', 'actions'];
+  displayedColumns: string[] = ['name', 'email', 'phoneNumber', 'role', 'active', 'actions'];
   dataSource: any;
   users!: User[];
   editingIndex: number | null = null;
@@ -73,10 +74,10 @@ export class UserListComponent implements OnInit, AfterViewInit {
   userType: any;
 
   constructor(
-    private userService: UserService, 
+    private userService: UserService,
     private fb: FormBuilder,
-    private route: ActivatedRoute
-    ) {
+    private route: ActivatedRoute,
+  ) {
     this.editForm = this.fb.group({
       name: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email])
@@ -150,6 +151,19 @@ export class UserListComponent implements OnInit, AfterViewInit {
   }
 
   deleteUser(user: User) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: { message: `Are you sure you want to delete user '${user.email}'?` }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.delete(user);
+      }
+    });
+  }
+
+  delete(user: User) {
     this.userService.deleteUser(user.userId).subscribe({
       next: (response) => {
         this.loadUsers(this.userType);
@@ -162,26 +176,26 @@ export class UserListComponent implements OnInit, AfterViewInit {
   }
 
   blockUnblockUser(index: number, user: User) {
-      if(user.active) {
-        this.userService.lockUser(user.userId).subscribe({
-          next: (response) => {
-            this.loadUsers(this.userType);
-            console.log("User updated successfully:", response);
-          },
-          error: (err) => {
-            console.error("Error updating user:", err);
-          }
-        });
-      } else {
-        this.userService.unlockUser(user.userId).subscribe({
-          next: (response) => {
-            this.loadUsers(this.userType);
-            console.log("User updated successfully:", response);
-          },
-          error: (err) => {
-            console.error("Error updating user:", err);
-          }
-        });
-      }
+    if (user.active) {
+      this.userService.lockUser(user.userId).subscribe({
+        next: (response) => {
+          this.loadUsers(this.userType);
+          console.log("User updated successfully:", response);
+        },
+        error: (err) => {
+          console.error("Error updating user:", err);
+        }
+      });
+    } else {
+      this.userService.unlockUser(user.userId).subscribe({
+        next: (response) => {
+          this.loadUsers(this.userType);
+          console.log("User updated successfully:", response);
+        },
+        error: (err) => {
+          console.error("Error updating user:", err);
+        }
+      });
+    }
   }
 }

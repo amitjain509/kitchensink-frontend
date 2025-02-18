@@ -74,6 +74,6 @@ export class MenuComponent {
   }
 
   hasPermission(permission: string): boolean {
-    return this.permissions.includes('ALL') || this.permissions.includes(permission);
+    return this.permissions.includes(permission);
   }
 }

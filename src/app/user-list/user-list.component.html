@@ -22,21 +22,17 @@
                 </td>
             </ng-container>
 
+            <!-- Role Column -->
             <ng-container matColumnDef="role">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
                 <td mat-cell *matCellDef="let element; let i = index">
-                    <ng-container *ngIf="editingIndex === i; else viewRole">
-                        <mat-form-field appearance="outline">
-                            <mat-select [formControl]="$any(editForm).get('role')">
-                                <mat-option *ngFor="let role of element.roles" [value]="role.roleId">
-                                    {{ role.roleName }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                    <!-- Display Role as text without the form field boundary -->
+                    <ng-container *ngIf="element.roles.length">
+                        <span>{{ element.roles[0]?.roleName }}</span>
                     </ng-container>
-                    <ng-template #viewRole>
-                        {{ element.roles?.length ? element.roles[0]?.roleName : 'No Role Assigned' }}
-                    </ng-template>
+                    <ng-container *ngIf="!element.roles.length">
+                        No Role Assigned
+                    </ng-container>
                 </td>
             </ng-container>
 

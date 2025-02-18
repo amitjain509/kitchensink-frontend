@@ -25,6 +25,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { RoleService } from '../_services/role.service';
 import { Role } from '../_models/role.model';
 import { RoleCreateComponent } from '../role-create/role-create.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-role-create',
@@ -66,10 +67,10 @@ export class RoleComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort !: MatSort;
 
   constructor(
-    private roleService: RoleService, 
+    private roleService: RoleService,
     private dialog: MatDialog,
     private router: Router
-    ) {
+  ) {
 
   }
   ngOnInit(): void {
@@ -105,9 +106,19 @@ export class RoleComponent implements OnInit, AfterViewInit {
   }
 
   deleteRole(role: Role) {
-    this.roleService.deleteRole(role).subscribe(res => {
-     this.loadRoles();
-    });;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: { message: `Are you sure you want to delete role "${role.roleName}"?` }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.roleService.deleteRole(role).subscribe(res => {
+          console.log('Role deleted:', role);
+          this.loadRoles();
+        });
+      }
+    });
   }
 
   navigateToAssignPermission() {
