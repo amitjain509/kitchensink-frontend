@@ -10,6 +10,7 @@ export const AuthLoginGuard: CanActivateFn = (route, state) => {
   // Check if the user is already authenticated
   if (authService.isAuthenticated()) {
     // Redirect to menu if the user is already authenticated
+    router.navigateByUrl('/menu');
     return false;  // Prevent access to the login page
   }
   return true;  // Allow access to login page if not authenticated

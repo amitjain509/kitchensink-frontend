@@ -52,6 +52,17 @@ mat-list-item button {
     display: flex;
     text-align: left;
     justify-content: flex-start;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+  }
+
+  mat-list-item button.active {
+    color: #b4b4bd !important;
+    background-color: rgba(99, 102, 241, 0.1);
+  }
+
+  mat-panel-title.active {
+    color: #9f9faf !important;
   }
   
   mat-icon {

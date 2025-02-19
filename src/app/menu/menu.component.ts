@@ -76,4 +76,12 @@ export class MenuComponent {
   hasPermission(permission: string): boolean {
     return this.permissions.includes(permission);
   }
+
+  isRouteActive(route: string): boolean {
+    return this.router.url.includes(route);
+  }
+
+  isAccessControlExpanded(): boolean {
+    return this.isRouteActive('roles') || this.isRouteActive('permission-assign');
+  }
 }

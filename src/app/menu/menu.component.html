@@ -5,12 +5,15 @@
     <mat-drawer #drawer opened="true" mode="side" position="start">
         <mat-nav-list>
             <mat-list-item>
-                <button routerLink="profile" mat-button><mat-icon>home</mat-icon> Home</button>
+                <button routerLink="profile" mat-button [class.active]="isRouteActive('profile')">
+                    <mat-icon>home</mat-icon> Home
+                </button>
             </mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item *ngIf="hasPermission('USER_CREATE') || hasPermission('USER_DELETE')">
-                <button (click)="navigateToUsers('USER')"
-                    mat-button><mat-icon>supervisor_account</mat-icon>Users</button>
+                <button (click)="navigateToUsers('USER')" mat-button [class.active]="isRouteActive('users')">
+                    <mat-icon>supervisor_account</mat-icon>Users
+                </button>
             </mat-list-item>
             <mat-divider></mat-divider>
             <!-- <mat-list-item>
@@ -19,20 +22,24 @@
             </mat-list-item>
             <mat-divider></mat-divider> -->
             <!-- Access Control with Submenu -->
-            <mat-expansion-panel>
+            <mat-expansion-panel [expanded]="isAccessControlExpanded()">
                 <mat-expansion-panel-header>
-                    <mat-panel-title>
+                    <mat-panel-title [class.active]="isAccessControlExpanded()">
                         <mat-icon>security</mat-icon> Access Control
                     </mat-panel-title>
                 </mat-expansion-panel-header>
 
                 <mat-list>
                     <mat-list-item>
-                        <button routerLink="roles" mat-button>Roles</button>
+                        <button routerLink="roles" mat-button [class.active]="isRouteActive('roles')">
+                            Roles
+                        </button>
                     </mat-list-item>
                     <mat-divider></mat-divider>
                     <mat-list-item>
-                        <button routerLink="permission-assign" mat-button>Permissions</button>
+                        <button routerLink="permission-assign" mat-button [class.active]="isRouteActive('permission-assign')">
+                            Permissions
+                        </button>
                     </mat-list-item>
                 </mat-list>
             </mat-expansion-panel>
