@@ -26,27 +26,28 @@
                 <th mat-header-cell *matHeaderCellDef>
                     <mat-checkbox (change)="$event ? masterToggle() : null"
                         [checked]="selection.hasValue() && isAllSelected()"
-                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        [disabled]="!hasPermission('ROLE_EDIT')">
                     </mat-checkbox>
                 </th>
                 <td mat-cell *matCellDef="let row">
-                    <mat-checkbox
-                      (click)="$event.stopPropagation()"
-                      (change)="$event ? selection.toggle(row) : null"
-                      [checked]="selection.isSelected(row)"
-                    >
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? (hasPermission('ROLE_EDIT') ? selection.toggle(row) : null): null"
+                        [checked]="selection.isSelected(row)" [disabled]="!hasPermission('ROLE_EDIT')">
                     </mat-checkbox>
-                  </td>
+                </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+                (click)="hasPermission('ROLE_EDIT') ? selection.toggle(row) : null"
+                [class.disabled-row]="!hasPermission('ROLE_EDIT')"></tr>
         </table>
         <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
         </mat-paginator>
     </div>
     <div class="save-button-container">
-        <button mat-raised-button color="primary" (click)="savePermission()" [disabled]="!selectedRole">
+        <button mat-raised-button color="primary" (click)="savePermission()"
+            [disabled]="!selectedRole || !hasPermission('ROLE_EDIT') ">
             Save
         </button>
     </div>

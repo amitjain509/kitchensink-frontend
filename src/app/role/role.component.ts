@@ -26,6 +26,8 @@ import { RoleService } from '../_services/role.service';
 import { Role } from '../_models/role.model';
 import { RoleCreateComponent } from '../role-create/role-create.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { AuthService } from '../_services/auth.service';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-role-create',
@@ -56,22 +58,32 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
     MatPaginatorModule,
     MatFormFieldModule,
     CommonModule,
-    RouterModule]
+    RouterModule,
+    ReactiveFormsModule]
 })
 export class RoleComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['roleName', 'roleDescription', 'actions'];
   dataSource: any;
   roles!: Role[];
+  permissions: string[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort !: MatSort;
 
+  searchControl = new FormControl('');
+
   constructor(
     private roleService: RoleService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
   ) {
+    this.permissions = this.authService.getUserPermissions();
 
+    // Subscribe to search input changes
+    this.searchControl.valueChanges.subscribe(value => {
+      this.applyFilter(value || '');
+    });
   }
   ngOnInit(): void {
     this.loadRoles();
@@ -79,6 +91,13 @@ export class RoleComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
+    // Custom filter predicate for role fields
+    this.dataSource.filterPredicate = (data: Role, filter: string) => {
+      const searchStr = filter.toLowerCase();
+      return data.roleName.toLowerCase().includes(searchStr);
+    };
   }
 
   loadRoles() {
@@ -87,6 +106,12 @@ export class RoleComponent implements OnInit, AfterViewInit {
       this.dataSource = new MatTableDataSource<Role>(this.roles);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+
+      // Reapply filter predicate after data load
+      this.dataSource.filterPredicate = (data: Role, filter: string) => {
+        const searchStr = filter.toLowerCase();
+        return data.roleName.toLowerCase().includes(searchStr);
+      };
     });
   }
 
@@ -123,5 +148,17 @@ export class RoleComponent implements OnInit, AfterViewInit {
 
   navigateToAssignPermission() {
     this.router.navigate(['/permission-assign']);
+  }
+
+  hasPermission(permission: string): boolean {
+    return this.permissions.includes(permission);
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }

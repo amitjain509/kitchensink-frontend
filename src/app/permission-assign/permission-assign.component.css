@@ -4,10 +4,23 @@
     padding: 10px;
 }
 
-
 button[disabled] {
     background-color: #b0bec5 !important;
     color: black !important;
     opacity: 1 !important;
     cursor: not-allowed;
-  }
+}
+
+.disabled-row {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.disabled-row:hover {
+    background-color: transparent !important;
+}
+
+.mat-mdc-row:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+    cursor: pointer;
+}

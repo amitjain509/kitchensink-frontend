@@ -1,3 +1,28 @@
 table {
     width: 100%;
-  }
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.search-field {
+    width: 300px;
+    margin-left: 16px;
+}
+
+.mat-mdc-card-header {
+    padding: 16px;
+}
+
+.mat-mdc-form-field {
+    font-size: 14px;
+}
+
+.mat-mdc-table {
+    width: 100%;
+}

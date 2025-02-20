@@ -18,6 +18,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
   selector: 'app-permission-assign',
@@ -41,6 +42,7 @@ export class PermissionAssignComponent implements OnInit, AfterViewInit {
   roles!: Role[];
   selectedRole: string | null = null;
   permissionsTableData!: PermissionTableData[];
+  permissions: string[] = [];
 
   displayedColumns: string[] = ['permissionName', 'select'];
   dataSource = new MatTableDataSource<any>();
@@ -52,8 +54,9 @@ export class PermissionAssignComponent implements OnInit, AfterViewInit {
     private roleService: RoleService,
     private permissionService: PermissionService,
     private dialog: MatDialog,
+    private authService: AuthService,
   ) {
-    
+    this.permissions = this.authService.getUserPermissions(); 
   }
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -179,5 +182,9 @@ export class PermissionAssignComponent implements OnInit, AfterViewInit {
         message: errorMessage
       }
     });
+  }
+
+  hasPermission(permission: string): boolean {
+    return this.permissions.includes(permission);
   }
 }

@@ -9,40 +9,45 @@
                     <mat-icon>home</mat-icon> Home
                 </button>
             </mat-list-item>
-            <mat-divider></mat-divider>
-            <mat-list-item *ngIf="hasPermission('USER_CREATE') || hasPermission('USER_DELETE')">
-                <button (click)="navigateToUsers('USER')" mat-button [class.active]="isRouteActive('users')">
-                    <mat-icon>supervisor_account</mat-icon>Users
-                </button>
-            </mat-list-item>
-            <mat-divider></mat-divider>
+            <div *ngIf="hasPermission('USER_VIEW')">
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                    <button (click)="navigateToUsers('USER')" mat-button [class.active]="isRouteActive('users')">
+                        <mat-icon>supervisor_account</mat-icon>Users
+                    </button>
+                </mat-list-item>
+            </div>
             <!-- <mat-list-item>
                 <button (click)="navigateToUsers('MEMBER')"
                     mat-button><mat-icon>supervised_user_circle</mat-icon>Members</button>
             </mat-list-item>
             <mat-divider></mat-divider> -->
             <!-- Access Control with Submenu -->
-            <mat-expansion-panel [expanded]="isAccessControlExpanded()">
-                <mat-expansion-panel-header>
-                    <mat-panel-title [class.active]="isAccessControlExpanded()">
-                        <mat-icon>security</mat-icon> Access Control
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
+            <div *ngIf="hasPermission('ROLE_VIEW')">
+                <mat-divider></mat-divider>
+                <mat-expansion-panel [expanded]="isAccessControlExpanded()">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title [class.active]="isAccessControlExpanded()">
+                            <mat-icon>security</mat-icon> Access Control
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-list>
+                        <mat-list-item>
+                            <button routerLink="roles" mat-button [class.active]="isRouteActive('roles')">
+                                Roles
+                            </button>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>
+                            <button routerLink="permission-assign" mat-button
+                                [class.active]="isRouteActive('permission-assign')">
+                                Permissions
+                            </button>
+                        </mat-list-item>
 
-                <mat-list>
-                    <mat-list-item>
-                        <button routerLink="roles" mat-button [class.active]="isRouteActive('roles')">
-                            Roles
-                        </button>
-                    </mat-list-item>
-                    <mat-divider></mat-divider>
-                    <mat-list-item>
-                        <button routerLink="permission-assign" mat-button [class.active]="isRouteActive('permission-assign')">
-                            Permissions
-                        </button>
-                    </mat-list-item>
-                </mat-list>
-            </mat-expansion-panel>
+                    </mat-list>
+                </mat-expansion-panel>
+            </div>
 
             <div class="logout-container">
                 <mat-divider></mat-divider>

@@ -5,6 +5,7 @@ export class User {
     userId!: string;
     name!: string;
     email!: string;
+    phoneNumber!: string;
     active!: boolean;
     locked!: boolean;
     userType!: string;

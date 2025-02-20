@@ -15,6 +15,12 @@ export class AuthService extends BaseService {
         );
     }
 
+    expirePassword(email: string) {
+        return this.put(`${this.apiUrl}/auth/reset-password/${email}`, null).pipe(
+            catchError(this.handleError)
+        );
+    }
+
 
     assignRole(userId: string, roles: string[]) {
         return this.patch(`${this.apiUrl}/users/${userId}`, roles).pipe(

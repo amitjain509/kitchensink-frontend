@@ -27,6 +27,9 @@ import { User } from '../_models/user.model';
 import { UserCreateComponent } from '../user-create/user-create.component';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { AuthService } from '../_services/auth.service';
+import { Password } from '../_models/password.model';
+import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 
 @Component({
   selector: 'app-user-list',
@@ -73,14 +76,25 @@ export class UserListComponent implements OnInit, AfterViewInit {
   readonly dialog = inject(MatDialog);
   userType: any;
 
+  permissions: string[] = [];
+
+  searchControl = new FormControl('');
+
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private authService: AuthService
   ) {
     this.editForm = this.fb.group({
       name: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email])
+    });
+    this.permissions = this.authService.getUserPermissions();
+
+    // Subscribe to search input changes
+    this.searchControl.valueChanges.subscribe(value => {
+      this.applyFilter(value || '');
     });
   }
 
@@ -93,6 +107,15 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
+    // Custom filter predicate for multiple fields
+    this.dataSource.filterPredicate = (data: User, filter: string) => {
+      const searchStr = filter.toLowerCase();
+      return data.name.toLowerCase().includes(searchStr) || 
+             data.email.toLowerCase().includes(searchStr) || 
+             (data.phoneNumber && data.phoneNumber.toLowerCase().includes(searchStr));
+    };
   }
 
   loadUsers(userType: string) {
@@ -101,7 +124,23 @@ export class UserListComponent implements OnInit, AfterViewInit {
       this.dataSource = new MatTableDataSource<User>(this.users);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      
+      // Reapply filter predicate after data load
+      this.dataSource.filterPredicate = (data: User, filter: string) => {
+        const searchStr = filter.toLowerCase();
+        return data.name.toLowerCase().includes(searchStr) || 
+               data.email.toLowerCase().includes(searchStr) || 
+               (data.phoneNumber && data.phoneNumber.toLowerCase().includes(searchStr));
+      };
     });
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   addUser() {
@@ -197,5 +236,34 @@ export class UserListComponent implements OnInit, AfterViewInit {
         }
       });
     }
+  }
+
+  resetPassword(user: User) {
+    if (user) {
+      this.confirmDialog(
+        `Are you sure you want to reset user's password?`,
+        () => this.authService.expirePassword(user.email).subscribe({
+          next: () => console.log('Password expired successfully'),
+          error: err => console.error('Error expiring password:', err)
+        })
+      );
+    }
+  }
+
+  confirmDialog(msg:string, action: () => void) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: { message: msg }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        action();
+      }
+    });
+  }
+
+  hasPermission(permission: string): boolean {
+    return this.permissions.includes(permission);
   }
 }
