@@ -17,6 +17,7 @@ import { Drawer } from 'primeng/drawer';
 import { RoleCreateComponent } from "./role-create/role-create.component";
 import { Card } from 'primeng/card';
 import { Skeleton } from 'primeng/skeleton';
+import { AuthService } from '../../_services/auth.service';
 
 
 @Component({
@@ -45,17 +46,19 @@ import { Skeleton } from 'primeng/skeleton';
 export class RoleComponent {
   loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   role$: BehaviorSubject<Array<Role>> = new BehaviorSubject<Array<Role>>([]);
-
+  permissions: string[] = [];
   public showDrawer: boolean;
 
   constructor(
     private roleService: RoleService,
+    private authService: AuthService,
     private confirmationService: ConfirmationService,
     private toastService: ToastService) {
     this.showDrawer = false;
   }
 
   ngOnInit(): void {
+    this.permissions = this.authService.getUserPermissions();
     this.loadRoles();
   }
 
@@ -94,9 +97,9 @@ export class RoleComponent {
     });
   }
 
-  // hasPermission(permission: string): boolean {
-  //   return this.permissions.includes(permission);
-  // }
+  hasPermission(permission: string): boolean {
+    return this.permissions.includes(permission);
+  }
 
   // applyFilter(filterValue: string) {
   //   this.dataSource.filter = filterValue.trim().toLowerCase();

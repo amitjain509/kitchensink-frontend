@@ -15,11 +15,6 @@ export class MenuComponent {
     this.permissions = this.authService.getUserPermissions();
   }
 
-  logout() {
-    sessionStorage.clear(); // Clear session
-    this.router.navigate(['/login']);   // Redirect to login page
-  }
-
   navigateToUsers(userType: string) {
     this.router.navigate(['/menu/users', userType]);
   }

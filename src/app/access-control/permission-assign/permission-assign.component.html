@@ -27,8 +27,7 @@
                     </td>
                     <td>
                         <p-checkbox [(ngModel)]="permission.isAssigned" [binary]="true"
-                            (onChange)="onPermissionChange()"></p-checkbox>
-                        <!-- [disabled]="true" -->
+                            (onChange)="onPermissionChange()" [disabled]="!hasPermission('ROLE_EDIT')"></p-checkbox>
                     </td>
                 </tr>
             </ng-template>
@@ -43,6 +42,6 @@
     </p-card>
     <div class="flex gap-x-5 mt-auto justify-center">
         <p-button (onClick)="onSubmit()" [loading]="loading" label="Save" loadingIcon="pi pi-spin pi-spinner"
-         styleClass="p-button-lg px-6 py-3 text-md m-3" [disabled]="!selectedRole"/>
+         styleClass="p-button-lg px-6 py-3 text-md m-3" [disabled]="!selectedRole || !hasPermission('ROLE_EDIT')"/>
     </div>
 </div>

@@ -5,10 +5,12 @@ import { Password } from '../_models/password.model';
 import { UserData } from '../_models/userData.model';
 import { environment } from '../../environments/environment';
 import { AuthModel } from '../shared/models';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService extends BaseService {
     private apiUrl = environment.apiUrl;
+    private router = inject(Router);
 
     resetPassword(password: Password) {
         return this.post(`${this.apiUrl}/auth/reset-password`, password).pipe(
@@ -40,6 +42,11 @@ export class AuthService extends BaseService {
         const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT
         return payload.permissions || [];
     }
+
+    logout() {
+        localStorage.clear(); // Clear session
+        this.router.navigate(['/account/login']);   // Redirect to login page
+      }
 
     isAuthenticated(): boolean {
         // Check if the session token exists in localStorage

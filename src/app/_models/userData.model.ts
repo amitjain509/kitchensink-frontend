@@ -1,3 +1,5 @@
+import { Role } from "./role.model";
+
 export class UserData {
     userId!: string;
     name!: string;
@@ -5,5 +7,6 @@ export class UserData {
     token!: string;
     userType!: string;
     permissions!: string[];
+    roles!: Role[];
     passwordResetRequired!: boolean;
 }

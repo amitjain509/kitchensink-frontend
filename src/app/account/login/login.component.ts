@@ -9,6 +9,7 @@ import { Password } from 'primeng/password';
 import { finalize } from 'rxjs';
 import { ToastService } from '../../shared/services';
 import { AuthService } from '../../_services/auth.service';
+import { UserData } from '../../_models/userData.model';
 
 @Component({
   selector: 'app-login',
@@ -49,10 +50,7 @@ export class LoginComponent {
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: res => {
-          localStorage.setItem('token', res.token);
-          localStorage.setItem('name', res.name);
-          localStorage.setItem('email', res.email);
-          localStorage.setItem('permissions', JSON.stringify(res.permissions));
+          this.setLocalStorage(res);
           if (res.passwordResetRequired) {
             this._router.navigate(['/account/reset-password']);
           } else {
@@ -69,5 +67,13 @@ export class LoginComponent {
           this.loginForm.enable();
         }
       });
+  }
+
+  setLocalStorage(res: UserData) {
+    localStorage.setItem('token', res.token);
+    localStorage.setItem('name', res.name);
+    localStorage.setItem('email', res.email);
+    localStorage.setItem('permissions', JSON.stringify(res.permissions));
+    localStorage.setItem('roles', JSON.stringify(res.roles?.map(r=>r.roleName)))
   }
 }

@@ -9,7 +9,7 @@ import { AsyncPipe, CommonModule, TitleCasePipe } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Card } from 'primeng/card';
 import { RepeatDirective } from '../../shared/directives/repeat.directive';
 import { NoDataComponent } from '../../shared/components/no-data/no-data.component';
@@ -20,6 +20,7 @@ import { PermissionTableData } from '../../_models/permission-table.model';
 import { Checkbox } from 'primeng/checkbox';
 import { find } from 'lodash-es';
 import { Button } from 'primeng/button';
+import { AuthService } from '../../_services/auth.service';
 
 @Component({
   selector: 'app-permission-assign',
@@ -49,6 +50,8 @@ export class PermissionAssignComponent {
   permission$: BehaviorSubject<Array<PermissionTableData>> = new BehaviorSubject<Array<PermissionTableData>>([]);
   permissions!: Permission[];
 
+  loggedInPermissions: string[] = [];
+
   submitted: boolean;
   loading: boolean;
 
@@ -58,7 +61,9 @@ export class PermissionAssignComponent {
 
   constructor(
     private fb: FormBuilder,
+    private _router: Router,
     private roleService: RoleService,
+    private authService: AuthService,
     private permissionService: PermissionService,
     private confirmationService: ConfirmationService,
     private toastService: ToastService) {
@@ -68,6 +73,7 @@ export class PermissionAssignComponent {
   }
 
   ngOnInit(): void {
+    this.loggedInPermissions = this.authService.getUserPermissions();
     this.loadRoles();
     this.loadPermissions();
   }
@@ -146,6 +152,9 @@ export class PermissionAssignComponent {
       })).subscribe({
         next: response => {
           this.toastService.success(`Permissions linked successfully`);
+          if (this._isLoggedInUserPermissionModified(assignedPermissionNames)) {
+            this.authService.logout();
+          }
         },
         error: response => {
           const message =
@@ -153,5 +162,21 @@ export class PermissionAssignComponent {
           this.toastService.error(new TitleCasePipe().transform(message));
         }
       });
+  }
+
+  _isLoggedInUserPermissionModified(assignedPermissionNames: string[]) {
+    if (!JSON.parse(localStorage.getItem('roles')??'').includes(this.selectedRole.roleName)) {
+      return false;
+    }
+    const loggedInSet = new Set(this.loggedInPermissions);
+    const assignedSet = new Set(assignedPermissionNames);
+
+    // Check if there are any exclusive permissions
+    return [...loggedInSet].some(p => !assignedSet.has(p)) ||
+      [...assignedSet].some(p => !loggedInSet.has(p));
+  }
+
+  hasPermission(permission: string): boolean {
+    return this.loggedInPermissions.includes(permission);
   }
 }
