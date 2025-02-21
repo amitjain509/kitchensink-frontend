@@ -1,0 +1,30 @@
+import { Dictionary } from 'lodash';
+
+export const BADGE_COLOR: Dictionary<{ 'background-color': string; color: string }> = {
+  A: { 'background-color': '#28a745', color: '#ffffff' },
+  B: { 'background-color': '#ff66cc', color: '#ffffff' },
+  C: { 'background-color': '#ffc107', color: '#ffffff' },
+  D: { 'background-color': '#17a2b8', color: '#ffffff' },
+  E: { 'background-color': '#007bff', color: '#ffffff' },
+  F: { 'background-color': '#28a745', color: '#ffffff' },
+  G: { 'background-color': '#20c997', color: '#ffffff' },
+  H: { 'background-color': '#6f42c1', color: '#ffffff' },
+  I: { 'background-color': '#dc3545', color: '#ffffff' },
+  J: { 'background-color': '#fd7e14', color: '#ffffff' },
+  K: { 'background-color': '#ffc107', color: '#ffffff' },
+  L: { 'background-color': '#6c757d', color: '#ffffff' },
+  M: { 'background-color': '#28a745', color: '#ffffff' },
+  N: { 'background-color': '#17a2b8', color: '#ffffff' },
+  O: { 'background-color': '#007bff', color: '#ffffff' },
+  P: { 'background-color': '#e83e8c', color: '#ffffff' },
+  Q: { 'background-color': '#6610f2', color: '#ffffff' },
+  R: { 'background-color': '#28a745', color: '#ffffff' },
+  S: { 'background-color': '#ff66cc', color: '#ffffff' },
+  T: { 'background-color': '#ffc107', color: '#ffffff' },
+  U: { 'background-color': '#ffc107', color: '#ffffff' },
+  V: { 'background-color': '#17a2b8', color: '#ffffff' },
+  W: { 'background-color': '#007bff', color: '#ffffff' },
+  X: { 'background-color': '#28a745', color: '#ffffff' },
+  Y: { 'background-color': '#20c997', color: '#ffffff' },
+  Z: { 'background-color': '#6f42c1', color: '#ffffff' }
+};

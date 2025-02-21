@@ -1,0 +1,51 @@
+<div class="flex sm:flex-row flex-col sm:justify-between sm:items-center items-start sm:gap-0 gap-y-2.5 mb-5">
+    <p-button (onClick)="showDrawer = true" icon="pi pi-plus" label="Add Role" severity="contrast"
+        styleClass="px-3 py-2"  variant="outlined" />
+</div>
+
+<p-card>
+    <p-table [loading]="loading$ | async" [paginator]="true" [rows]="10" [showLoader]="false"
+        [value]="(role$ | async) ?? []" [rowsPerPageOptions]="[10, 20, 30]" responsiveLayout="scroll"
+        styleClass="p-datatable-striped">
+        <ng-template pTemplate="loadingbody">
+            <tr *appRepeat="15">
+                <td *appRepeat="6">
+                    <p-skeleton />
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template let-role pTemplate="body">
+            <tr>
+                <td>
+                    <a [routerLink]="role.roleId" class="text-primary font-semibold">
+                        {{ role.roleName }}
+                    </a>
+                </td>
+                <td>{{ role.roleDescription }}</td>
+                <td class="flex gap-3">
+                    <p-button (click)="deleteRole(role)" [outlined]="true" icon="pi pi-trash" severity="danger"
+                        styleClass="action-button" />
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">
+                    <app-no-data />
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-card>
+
+<p-drawer [(visible)]="showDrawer" [header]="'Create Role'" blockScroll="true" closeOnEscape="false" dismissible="false"
+    position="right" styleClass="w-full md:w-[500px]">
+    <app-role-create/>
+</p-drawer>

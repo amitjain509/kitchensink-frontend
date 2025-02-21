@@ -1,0 +1,6 @@
+# Ignore build files
+dist
+node_modules
+package-lock.json
+.angular
+.idea

@@ -1,0 +1,17 @@
+<p-menu [model]="items" styleClass="sidebar border-none p-0">
+  <ng-template let-item pTemplate="submenuheader">
+    <span class="text-gray-400 text-sm">{{ item.label }}</span>
+  </ng-template>
+  <ng-template let-item pTemplate="item">
+    <a
+      [queryParams]="item.queryParams"
+      [routerLink]="item.route"
+      class="flex items-center p-menu-item-link py-3 my-0.5"
+      pRipple
+      routerLinkActive="active-link"
+    >
+      <span [class]="item.icon"></span>
+      <span class="ml-2">{{ item.label }}</span>
+    </a>
+  </ng-template>
+</p-menu>

@@ -1,0 +1,22 @@
+.current-time-line {
+  height: calc(100% - 43px);
+  @apply absolute w-0 border border-primary top-[43px];
+}
+
+::ng-deep {
+  .p-datatable-thead {
+    @apply z-10;
+  }
+
+  .p-datepicker-input:hover ~ .p-datepicker-dropdown {
+    @apply border-surface-400 dark:border-slate-500;
+  }
+
+  .p-datepicker-input:focus ~ .p-datepicker-dropdown {
+    @apply border-primary-500 dark:border-slate-300;
+  }
+}
+
+.time-ring {
+  @apply w-16 p-0.5 text-[10px] text-center rounded left-2 -top-3 absolute text-primary bg-blue-200 dark:bg-blue-800;
+}

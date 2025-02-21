@@ -1,0 +1,30 @@
+.app-confirmation-dialog {
+  @apply border-none w-[400px];
+  .p-dialog-header {
+    @apply bg-slate-100 dark:bg-slate-800 rounded-tl-xl rounded-tr-xl py-3;
+    .p-dialog-title {
+      @apply text-base;
+    }
+
+    .p-dialog-close-button {
+      @apply h-8 w-8;
+    }
+  }
+
+  .p-dialog-content {
+    @apply p-4 flex items-center justify-start gap-x-4;
+    .p-confirmdialog-icon {
+      @apply flex items-center text-xl w-auto;
+    }
+  }
+
+  .p-dialog-footer {
+    @apply flex items-center justify-end gap-x-3;
+  }
+}
+
+.app-dynamic-dialog {
+  .p-dialog-close-button {
+    @apply h-8 w-8;
+  }
+}

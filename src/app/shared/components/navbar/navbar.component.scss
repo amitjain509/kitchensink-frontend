@@ -1,0 +1,18 @@
+:host {
+  ::ng-deep {
+    .p-menubar {
+      @apply h-20 px-5 rounded-none border-l-0 border-r-0 border-t-0 border-b;
+    }
+
+    .p-avatar-text {
+      @apply text-lg;
+    }
+
+    .navbar-icon-button {
+      @apply p-5;
+      .p-button-icon {
+        @apply text-lg;
+      }
+    }
+  }
+}

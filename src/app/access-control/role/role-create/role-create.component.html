@@ -1,0 +1,22 @@
+<div class="flex flex-col h-full justify-between">
+    <form (ngSubmit)="onSubmit()" [formGroup]="roleForm">
+        <div class="mb-5">
+            <label class="font-semibold mb-2 block">Name</label>
+            <input class="w-full" formControlName="roleName" id="roleName" pInputText placeholder="Role Name" />
+            <small *ngIf="roleForm.get('roleName')?.hasError('required')" class="text-red-500">Name is required.</small>
+            <small *ngIf="roleForm.get('roleName')?.hasError('pattern')" class="text-red-500">Role Name should contain alphabets</small>
+            <small *ngIf="roleForm.get('roleName')?.hasError('maxlength')" class="text-red-500">Maximum 50 characters allowed.</small>
+        </div>
+
+        <div class="mb-5">
+            <label class="font-semibold mb-2 block" placeholder="Role Description">Role Description</label>
+            <textarea rows="5" cols="30" pTextarea formControlName="roleDescription" 
+            class="p-inputtext p-3 border border-gray-300 rounded-md w-full"></textarea>
+        </div>
+    </form>
+    <div class="flex gap-x-4 mt-auto justify-end">
+        <p-button (onClick)="onClose.emit()" [disabled]="loading" [outlined]="true" label="Cancel" />
+        <p-button [disabled]="roleForm.invalid" (onClick)="onSubmit()" [loading]="loading" label="Save"
+            loadingIcon="pi pi-spin pi-spinner" />
+    </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="flex flex-col h-full justify-between">
+    <form (ngSubmit)="onSubmit()" [formGroup]="userForm">
+      <div class="mb-5">
+        <label class="font-semibold mb-2 block">Name</label>
+        <input class="w-full" formControlName="name" id="name" pInputText placeholder="Name" />
+        <small *ngIf="userForm.get('name')?.hasError('required')" class="text-red-500">Name is required.</small>
+        <small *ngIf="userForm.get('name')?.hasError('minlength')" class="text-red-500">Minimum 3 characters required.</small>
+        <small *ngIf="userForm.get('name')?.hasError('maxlength')" class="text-red-500">Maximum 50 characters allowed.</small>
+        <small *ngIf="userForm.get('name')?.hasError('pattern')" class="text-red-500">Name should contain only alphabets and space only between words</small>
+      </div>
+  
+      <div class="mb-5">
+        <label class="font-semibold mb-2 block">Email</label>
+        <input class="w-full" formControlName="email" pInputText placeholder="Email" />
+        <small *ngIf="userForm.get('email')?.hasError('required')" class="text-red-500">Email is required.</small>
+        <small *ngIf="userForm.get('email')?.hasError('pattern')" class="text-red-500">Please enter a valid email address.</small>
+      </div>
+  
+      <div class="mb-5">
+        <label class="font-semibold mb-2 block">Phone Number</label>
+        <input class="w-full" formControlName="phoneNumber" pInputText placeholder="Phone Number" />
+        <small *ngIf="userForm.get('phoneNumber')?.hasError('required')" class="text-red-500">Phone Number is required.</small>
+        <small *ngIf="userForm.get('phoneNumber')?.hasError('pattern')" class="text-red-500">Please enter a valid phone number.</small>
+      </div>
+      <div>
+        <label class="font-semibold mb-2 block">Role</label>
+        <p-select [options]="roles" formControlName="selectedRole" [(ngModel)]="selectedRole" optionLabel="roleName" placeholder="Select a Role" class="w-full md:w-56" />
+        <div></div>
+        <small *ngIf="userForm.get('selectedRole')?.invalid" class="text-red-500">Role selection is required.</small>
+      </div>
+    </form>
+    <div class="flex gap-x-4 mt-auto justify-end">
+      <p-button (onClick)="onClose.emit()" [disabled]="loading" [outlined]="true" label="Cancel" />
+      <p-button [disabled]="userForm.invalid" (onClick)="onSubmit()" [loading]="loading" label="Save" loadingIcon="pi pi-spin pi-spinner" />
+    </div>
+  </div>
+  

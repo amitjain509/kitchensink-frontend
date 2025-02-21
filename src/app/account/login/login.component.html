@@ -1,0 +1,47 @@
+<div class="flex flex-col justify-center h-full p-8 gap-y-5">
+  <h2 class="text-2xl font-semibold">Welcome Back!</h2>
+  <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="flex flex-col gap-y-5">
+    <div class="flex flex-col gap-y-2">
+      <label class="text-sm block">Email</label>
+      <input class="w-full" formControlName="email" pInputText placeholder="Enter your email" />
+      <p-message
+        *ngIf="submitted && loginForm.get('email')?.hasError('required')"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        Email is required
+      </p-message>
+    </div>
+    <div class="flex flex-col gap-y-2">
+      <label class="text-sm block">Password</label>
+      <p-password
+        [feedback]="false"
+        formControlName="password"
+        inputStyleClass="w-full"
+        placeholder="Enter your password"
+        styleClass="w-full"
+      ></p-password>
+      <p-message
+        *ngIf="submitted && loginForm.get('password')?.hasError('required')"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        Password is required
+      </p-message>
+    </div>
+    <p-button
+      [disabled]="loading"
+      [icon]="loading ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in'"
+      [loading]="loading"
+      iconPos="right"
+      label="Login Now"
+      styleClass="w-full py-2"
+      type="submit"
+    />
+    <p class="text-sm">
+      Forgot password? <a [routerLink]="['/account/forgot-password']" class="text-blue-500">Click here</a>
+    </p>
+  </form>
+</div>

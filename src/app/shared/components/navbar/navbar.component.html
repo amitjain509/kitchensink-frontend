@@ -1,0 +1,52 @@
+<p-menubar styleClass="fixed top-0 z-50 w-full">
+  <ng-template pTemplate="start">
+    <p-button
+      (onClick)="toggleSidebar()"
+      *ngIf="router.url.includes('/admin')"
+      [outlined]="true"
+      [rounded]="true"
+      class="sm:hidden"
+      icon="pi pi-bars"
+      rounded="true"
+      size="large"
+      styleClass="mr-3 p-6"
+    />
+    <a class="flex flex-col justify-between items-center" routerLink="/">
+      <img alt="Aircraftly Logo" class="py-2" src="logo.svg" />
+    </a>
+  </ng-template>
+  <ng-template pTemplate="end">
+    <div class="flex items-center justify-between gap-x-2">
+      <p-button [icon]="'pi pi-bell'" [rounded]="true" [text]="true" styleClass="navbar-icon-button" />
+      <p-avatar
+        (click)="menu.toggle($event)"
+        [label]="'AD'"
+        shape="circle"
+        size="large"
+        styleClass="cursor-pointer ml-4"
+      />
+    </div>
+  </ng-template>
+</p-menubar>
+
+<p-menu #menu [model]="items" [popup]="true" styleClass="mt-4">
+  <ng-template pTemplate="start">
+    <div class="flex items-center gap-x-4 m-4">
+      <span class="inline-flex flex-col">
+        <span class="font-semibold">Admin User</span>
+      </span>
+    </div>
+  </ng-template>
+
+  <ng-template let-item pTemplate="item">
+    <a
+      [queryParams]="item.queryParams"
+      [routerLink]="item.route"
+      class="flex items-center p-menu-item-link"
+      queryParamsHandling="merge"
+    >
+      <span [class]="item.icon"></span>
+      <span class="ml-2">{{ item.label }}</span>
+    </a>
+  </ng-template>
+</p-menu>

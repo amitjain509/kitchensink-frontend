@@ -1,0 +1,18 @@
+{
+  "tabWidth": 2,
+  "bracketSpacing": true,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "none",
+  "printWidth": 100,
+  "disableLanguages": ["html"],
+  "arrowParens": "avoid",
+  "overrides": [
+    {
+      "files": "src/**/*.html",
+      "options": {
+        "printWidth": 120
+      }
+    }
+  ]
+}

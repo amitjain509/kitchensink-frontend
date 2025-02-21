@@ -1,0 +1,116 @@
+<div class="flex sm:flex-row flex-col sm:justify-between sm:items-center items-start sm:gap-0 gap-y-2.5 mb-5">
+    <h3 class="text-2xl">Users List</h3>
+    <p-button
+      (onClick)="showDrawer = true"
+      icon="pi pi-plus"
+      label="Add User"
+      severity="contrast"
+      styleClass="px-3 py-2"
+      variant="outlined"
+    />
+  </div>
+
+  <p-card>
+    <p-table
+      [loading]="loading$ | async"
+      [paginator]="true"
+      [rows]="10"
+      [showLoader]="false"
+      [value]="(user$ | async) ?? []"
+      [rowsPerPageOptions]="[10, 20, 30]"
+      responsiveLayout="scroll"
+      styleClass="p-datatable-striped"
+    >
+      <ng-template pTemplate="loadingbody">
+        <tr *appRepeat="15">
+          <td *appRepeat="6">
+            <p-skeleton />
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>Role</th>
+          <th>Active</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template let-user pTemplate="body">
+        <tr>
+          <td>
+            <a [routerLink]="user.userId" class="text-primary font-semibold">
+              {{ user.name }}
+            </a>
+          </td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phoneNumber }}</td>
+          <td>
+            <p-cellEditor>
+                <ng-template #input>
+                    <p-select
+                        [options]="user.roles"
+                        appendTo="body"
+                        [(ngModel)]="user.roles[0].roleName"
+                        [style]="{'width':'100%'}" />
+                </ng-template>
+                <ng-template #output>
+                    <p-tag
+                        [value]="user.roles[0].roleName" />
+                </ng-template>
+            </p-cellEditor>
+        </td>
+          <td>
+            <p-toggleswitch [(ngModel)]="user.active" (change)="blockUnblockUser(user)" /> 
+            <!-- [disabled]="!hasPermission('USER_LOCK')"  -->
+          </td>
+          <td class="flex gap-3">
+            <p-button
+              (onClick)="editUser(user)"
+              [outlined]="true"
+              icon="pi pi-pencil"
+              severity="contrast"
+              styleClass="action-button"
+              variant="outlined"
+            />
+            <p-button
+              (click)="deleteUser(user)"
+              [outlined]="true"
+              icon="pi pi-trash"
+              severity="danger"
+              styleClass="action-button"
+            />
+            <p-button
+              (click)="resetPassword(user)"
+              [outlined]="true"
+              icon="pi pi-lock"
+              severity="danger"
+              styleClass="action-button"
+            />
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="4">
+            <app-no-data />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+  
+  <p-drawer
+    [(visible)]="showDrawer"
+    [header]="'Create User'"
+    blockScroll="true"
+    closeOnEscape="false"
+    dismissible="false"
+    position="right"
+    styleClass="w-full md:w-[500px]"
+  >
+    <app-user-create (onClose)="onDrawerClose()" *ngIf="showDrawer" [user]="selectedUser" />
+  </p-drawer>
+  

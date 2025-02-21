@@ -1,0 +1,40 @@
+<p-card>
+    <div>
+        <p-select [options]="roles" [(ngModel)]="selectedRole" optionLabel="roleName" placeholder="Select a Role"
+            class="w-full md:w-56" (onChange)="onRoleChange()" />
+    </div>
+    <p-table [loading]="loading$ | async" [paginator]="true" [rows]="10" [showLoader]="false"
+        [value]="(permission$ | async) ?? []" [rowsPerPageOptions]="[10, 20, 30]" responsiveLayout="scroll"
+        styleClass="p-datatable-striped">
+        <ng-template pTemplate="loadingbody">
+            <tr *appRepeat="15">
+                <td *appRepeat="6">
+                    <p-skeleton />
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Permission Name</th>
+                <th>isAssigned</th>
+            </tr>
+        </ng-template>
+        <ng-template let-permission pTemplate="body">
+            <tr>
+                <td>
+                    {{ permission.permissionName }}
+                </td>
+                <td>
+                    <p-checkbox [(ngModel)]="permission.isAssigned" ></p-checkbox>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">
+                    <app-no-data />
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-card>

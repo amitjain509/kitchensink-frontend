@@ -1,0 +1,27 @@
+<div class="flex flex-col h-full justify-between">
+  <form (ngSubmit)="onSubmit()" [formGroup]="myForm">
+    <div class="mb-5">
+      <label class="font-semibold mb-2 block">Name</label>
+      <input class="w-full" formControlName="name" id="name" pInputText placeholder="Enter course name" />
+      <small *ngIf="submitted && myForm.get('name')?.errors" class="text-red-500">Name is required</small>
+    </div>
+
+    <div class="mb-5">
+      <label class="font-semibold mb-2 block">Description</label>
+      <input class="w-full" formControlName="description" pInputText placeholder="Enter course description" />
+      <small *ngIf="submitted && myForm.get('description')?.errors" class="text-red-500">
+        Description is required
+      </small>
+    </div>
+
+    <div class="mb-5">
+      <label class="font-semibold mb-2 block">Timezone</label>
+      <input class="w-full" formControlName="timezone" pInputText placeholder="Enter course timezone" />
+      <small *ngIf="submitted && myForm.get('timezone')?.errors" class="text-red-500"> Timezone is required </small>
+    </div>
+  </form>
+  <div class="flex gap-x-4 mt-auto justify-end">
+    <p-button (onClick)="onClose.emit()" [disabled]="loading" [outlined]="true" label="Cancel" />
+    <p-button (onClick)="onSubmit()" [loading]="loading" label="Save" loadingIcon="pi pi-spin pi-spinner" />
+  </div>
+</div>

@@ -1,0 +1,91 @@
+@use 'styles/loader';
+@use 'styles/confirmation-dialog';
+@use 'styles/table';
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap');
+
+@import 'primeicons/primeicons.css';
+
+@layer tailwind-base, primeng, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+html {
+  @apply h-full text-base font-sans;
+  body {
+    @apply h-[calc(100%-70px)] dark:bg-slate-800;
+  }
+}
+
+.loading-wrapper {
+  @apply absolute top-0 left-0 right-0 bottom-0 bg-white dark:bg-gray-800 opacity-90 text-center min-h-[300px] z-10 rounded-lg;
+
+  .spinner-wrapper {
+    @apply absolute top-1/2 left-1/2;
+    margin: -16px 0 0 -52px; /* Use @apply for similar positioning if possible */
+  }
+
+  .ox-spinner {
+    .st1 {
+      fill: var(--p-primary-color);
+    }
+  }
+}
+
+.action-button {
+  @apply w-9 h-9;
+}
+
+.p-toast-message-content {
+  .p-toast-message-icon {
+    @apply h-6 w-6;
+
+    .p-icon {
+      @apply h-6 w-6;
+    }
+  }
+}
+
+.p-tag {
+  @apply flex items-center w-16 h-7 gap-x-2 justify-center;
+
+  .p-tag-icon {
+    @apply flex items-center;
+
+    .pi-check,
+    .pi-times {
+      @apply text-sm;
+    }
+  }
+
+  .p-tag-label {
+    @apply font-normal flex items-center w-16 h-7 justify-center;
+  }
+}
+
+.app-container {
+  min-height: calc(100vh - 70px);
+}
+
+
+.main-container {
+  @apply mt-20 p-5 relative ml-72 bg-slate-100 dark:bg-slate-800 overflow-hidden transition-all;
+  min-height: calc(100vh - 70px);
+}
+
+.hide-sidebar {
+  #sidebar {
+    @apply -left-[250px];
+  }
+
+  .main-container {
+    @apply left-0 ml-0;
+  }
+}
