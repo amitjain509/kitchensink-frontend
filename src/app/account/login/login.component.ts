@@ -12,7 +12,7 @@ import { AuthService } from '../../_services/auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [Button, InputText, Password, ReactiveFormsModule, RouterLink, Message, NgIf],
+  imports: [Button, InputText, Password, ReactiveFormsModule, Message, NgIf],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -51,9 +51,10 @@ export class LoginComponent {
         next: res => {
           localStorage.setItem('token', res.token);
           localStorage.setItem('name', res.name);
+          localStorage.setItem('email', res.email);
           localStorage.setItem('permissions', JSON.stringify(res.permissions));
           if (res.passwordResetRequired) {
-            this._router.navigate(['/reset-password']);
+            this._router.navigate(['/account/reset-password']);
           } else {
             this._router.navigate(['/main/dashboard']);
           }

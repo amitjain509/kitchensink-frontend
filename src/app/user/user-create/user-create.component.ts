@@ -33,7 +33,10 @@ export class UserCreateComponent {
 
   submitted: boolean;
   loading: boolean;
-  selectedRole!: Role;
+  isEditable: boolean;
+
+  @Input()
+  role: null | Role;
 
   @Input()
   user: null | User;
@@ -51,21 +54,27 @@ export class UserCreateComponent {
     this.submitted = false;
     this.loading = false;
     this.user = null;
+    this.role = null;
+    this.isEditable = this.userComponent.isEditMode;
 
     this.userForm = this.fb.group({
       userId: [null],
       name: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[A-Za-z][a-z]*(\\s[A-Za-z][a-z]*)*$')]],
-      email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{3,}([._%+-][a-zA-Z0-9]+)*@[a-zA-Z0-9.-]{4,}\.[a-zA-Z]{2,}$')]],
+      email: [{ value: '', disabled: this.isEditable }, [Validators.required, Validators.pattern('^[a-zA-Z0-9]{3,}([._%+-][a-zA-Z0-9]+)*@[a-zA-Z0-9.-]{4,}\.[a-zA-Z]{2,}$')]],
       phoneNumber: ['', [Validators.required, Validators.pattern('^([\\s-]?)?[6-9]\\d{9}$')]],
-      selectedRole: ['', [Validators.required]]
+      roleId: [null],
+      role: ['', [Validators.required]]
     });
 
     this.loadRoles();
   }
-  
+
   ngOnInit(): void {
     if (this.user) {
       this.userForm.reset(this.user);
+    }
+    if (this.role) {
+      this.userForm.patchValue({ role: this.role});
     }
   }
 
@@ -89,7 +98,8 @@ export class UserCreateComponent {
 
     this.userForm.disable();
     this.loading = true;
-    payload.role = this.selectedRole.roleId;
+
+    payload.roleId = payload.role.roleId;
     payload.userType = 'USER'
 
     const request = iif(

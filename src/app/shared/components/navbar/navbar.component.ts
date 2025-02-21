@@ -32,6 +32,8 @@ import { debounceTime, delay, filter, fromEvent, of, startWith, switchMap } from
 export class NavbarComponent implements OnInit {
   showProfile: boolean;
   items: Array<MenuItem>;
+  loggedUserName!: any;
+  loggedEmail!: any;
 
   public readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
@@ -41,12 +43,14 @@ export class NavbarComponent implements OnInit {
   constructor() {
     this.items = [];
     this.showProfile = Boolean(this.activatedRoute.snapshot.queryParamMap.get('showProfile'));
-    this._init();
   }
 
   public ngOnInit(): void {
     this._setupResizeListener();
     this._setupRouteChangeListener();
+    this.loggedUserName = localStorage.getItem('name') == 'null' ? localStorage.getItem('email') : '';
+    this.loggedEmail = localStorage.getItem('email');
+    this._init();
   }
 
   public toggleSidebar(): void {
@@ -54,11 +58,11 @@ export class NavbarComponent implements OnInit {
   }
 
   private _init(): void {
+
     this.items = [
       {
-        label: 'Admin',
-        icon: 'pi pi-cog',
-        route: '/admin/user'
+        label: this.loggedUserName,
+        icon: 'pi pi-user',
       },
       {
         label: 'Log Out',

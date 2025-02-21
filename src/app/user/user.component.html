@@ -104,7 +104,7 @@
   
   <p-drawer
     [(visible)]="showDrawer"
-    [header]="'Create User'"
+    [header]="selectedUser ? 'Edit User' : 'Create User'"
     blockScroll="true"
     closeOnEscape="false"
     dismissible="false"
@@ -112,6 +112,6 @@
     styleClass="w-full md:w-[500px]"
     (onHide)="onDrawerClose()"
   >
-    <app-user-create (onClose)="onDrawerClose()" *ngIf="showDrawer" [user]="selectedUser" />
+    <app-user-create (onClose)="onDrawerClose()" *ngIf="showDrawer" [user]="selectedUser" [role]="selectedRole" />
   </p-drawer>
   

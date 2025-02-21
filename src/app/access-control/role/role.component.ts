@@ -59,6 +59,14 @@ export class RoleComponent {
     this.loadRoles();
   }
 
+  onDrawerClose() {
+    this.showDrawer = false;
+  }
+
+  cancelEdit() {
+    this.showDrawer = false;
+  }
+
   loadRoles() {
     this.roleService.getAllRoles()
       .pipe(finalize(() => this.loading$.next(false)))
@@ -85,10 +93,6 @@ export class RoleComponent {
       error: () => this.toastService.success('Failed to delete role')
     });
   }
-
-  // navigateToAssignPermission() {
-  //   this.router.navigate(['/permission-assign']);
-  // }
 
   // hasPermission(permission: string): boolean {
   //   return this.permissions.includes(permission);

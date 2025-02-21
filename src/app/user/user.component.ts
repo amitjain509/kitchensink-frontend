@@ -51,13 +51,15 @@ import { UserCreateComponent } from "./user-create/user-create.component";
 })
 export class UserComponent implements OnInit, AfterViewInit {
   public showDrawer: boolean;
-  public selectedRole: null;
+  
 
   loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   user$: BehaviorSubject<Array<User>> = new BehaviorSubject<Array<User>>([]);
 
   roles!: Role[];
   permissions: string[] = [];
+
+  selectedRole: Role | null = null;
   selectedUser: User | null = null;
   isEditMode = false;
 
@@ -141,12 +143,14 @@ export class UserComponent implements OnInit, AfterViewInit {
   onDrawerClose() {
     this.showDrawer = false;
     this.selectedUser = null;
+    this.selectedRole = null;
   }
 
   editUser(user: User) {
     this.selectedUser = user;
     this.isEditMode = true; // Enable edit mode
     this.showDrawer = true;
+    this.selectedRole = user.roles[0]
   }
 
   cancelEdit() {
@@ -154,6 +158,7 @@ export class UserComponent implements OnInit, AfterViewInit {
     this.showDrawer = false;
     this.editingIndex = null;
     this.selectedUser = null;
+    this.selectedRole = null;
   }
 
   deleteUser(user: User) {

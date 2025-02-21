@@ -24,9 +24,9 @@
       </div>
       <div>
         <label class="font-semibold mb-2 block">Role</label>
-        <p-select [options]="roles" formControlName="selectedRole" [(ngModel)]="selectedRole" optionLabel="roleName" placeholder="Select a Role" class="w-full md:w-56" />
+        <p-select [options]="roles" formControlName="role" optionLabel="roleName" placeholder="Select a Role" class="w-full md:w-56" />
         <div></div>
-        <small *ngIf="userForm.get('selectedRole')?.invalid" class="text-red-500">Role selection is required.</small>
+        <small *ngIf="userForm.get('role')?.invalid" class="text-red-500">Role selection is required.</small>
       </div>
     </form>
     <div class="flex gap-x-4 mt-auto justify-end">

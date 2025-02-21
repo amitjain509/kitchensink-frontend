@@ -5,7 +5,7 @@ import { RoleService } from '../../_services/role.service';
 import { ToastService } from '../../shared/services';
 import { Role } from '../../_models/role.model';
 import { SelectModule } from 'primeng/select';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule, TitleCasePipe } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -19,6 +19,7 @@ import { Permission } from '../../_models/permission.model';
 import { PermissionTableData } from '../../_models/permission-table.model';
 import { Checkbox } from 'primeng/checkbox';
 import { find } from 'lodash-es';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-permission-assign',
@@ -36,6 +37,7 @@ import { find } from 'lodash-es';
     Card,
     Skeleton,
     Checkbox,
+    Button,
     RepeatDirective,
     NoDataComponent
   ],
@@ -47,6 +49,9 @@ export class PermissionAssignComponent {
   permission$: BehaviorSubject<Array<PermissionTableData>> = new BehaviorSubject<Array<PermissionTableData>>([]);
   permissions!: Permission[];
 
+  submitted: boolean;
+  loading: boolean;
+
   public showDrawer: boolean;
   selectedRole!: Role;
   roles!: Role[];
@@ -54,10 +59,12 @@ export class PermissionAssignComponent {
   constructor(
     private fb: FormBuilder,
     private roleService: RoleService,
-    private permissionService: PermissionService, 
+    private permissionService: PermissionService,
     private confirmationService: ConfirmationService,
     private toastService: ToastService) {
     this.showDrawer = false;
+    this.submitted = false;
+    this.loading = false;
   }
 
   ngOnInit(): void {
@@ -69,16 +76,16 @@ export class PermissionAssignComponent {
     this.roleService.getAllRoles()
       .pipe(finalize(() => this.loading$.next(false)))
       .subscribe(response => {
-       this.roles = response
+        this.roles = response
       });
   }
 
   loadPermissions() {
     this.permissionService.getAllPermissions().pipe(finalize(() => this.loading$.next(false)))
-    .subscribe(response => {
-      this.permissions = response;
-     this.permission$.next(this.transformPermissions(response));
-    });
+      .subscribe(response => {
+        this.permissions = response;
+        this.permission$.next(this.transformPermissions(response));
+      });
   }
 
   transformPermissions(permissions: Permission[]): PermissionTableData[] {
@@ -100,7 +107,7 @@ export class PermissionAssignComponent {
       const updatedPermissions = this.permissions.map(permission => {
         return {
           permissionName: permission.name,
-          id: permission.id, 
+          id: permission.id,
           isAssigned: assignedPermissions.has(permission.name) // Check if permission exists
         };
       });
@@ -110,5 +117,41 @@ export class PermissionAssignComponent {
 
   onPermissionChange() {
     console.log(this.permission$.value.filter(p => p.isAssigned))
+  }
+
+
+  onSubmit() {
+    this.submitted = true;
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to update the permissions?',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => this._linkPermission()
+    });
+  }
+
+  _linkPermission() {
+    if (!this.selectedRole) {
+      console.warn("No role selected!");
+      return;
+    }
+
+    const assignedPermissionNames = this.permission$.value.filter(p => p.isAssigned).map(p => p.permissionName);
+
+    // Call API to save the updated permissions
+    this.roleService.assignPermissions(this.selectedRole.roleId, assignedPermissionNames).pipe(
+      finalize(() => {
+        this.loading = false;
+        // this.roleForm.enable();
+      })).subscribe({
+        next: response => {
+          this.toastService.success(`Permissions linked successfully`);
+        },
+        error: response => {
+          const message =
+            response['debug-message'] || `Permission linking failed`;
+          this.toastService.error(new TitleCasePipe().transform(message));
+        }
+      });
   }
 }

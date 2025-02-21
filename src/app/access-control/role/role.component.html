@@ -1,6 +1,6 @@
 <div class="flex sm:flex-row flex-col sm:justify-between sm:items-center items-start sm:gap-0 gap-y-2.5 mb-5">
     <p-button (onClick)="showDrawer = true" icon="pi pi-plus" label="Add Role" severity="contrast"
-        styleClass="px-3 py-2"  variant="outlined" />
+        styleClass="px-3 py-2" variant="outlined" />
 </div>
 
 <p-card>
@@ -28,7 +28,7 @@
                         {{ role.roleName }}
                     </a>
                 </td>
-                <td>{{ role.roleDescription }}</td>
+                <td [style]="{'white-space': 'normal', 'word-break': 'break-word', 'max-width': '40px'}">{{ role.roleDescription }}</td>
                 <td class="flex gap-3">
                     <p-button (click)="deleteRole(role)" [outlined]="true" icon="pi pi-trash" severity="danger"
                         styleClass="action-button" />
@@ -46,6 +46,6 @@
 </p-card>
 
 <p-drawer [(visible)]="showDrawer" [header]="'Create Role'" blockScroll="true" closeOnEscape="false" dismissible="false"
-    position="right" styleClass="w-full md:w-[500px]">
-    <app-role-create/>
+    position="right" styleClass="w-full md:w-[500px]" (onHide)="onDrawerClose()">
+    <app-role-create (onClose)="onDrawerClose()" *ngIf="showDrawer"/>
 </p-drawer>

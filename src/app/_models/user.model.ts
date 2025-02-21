@@ -9,7 +9,8 @@ export class User {
     active!: boolean;
     locked!: boolean;
     userType!: string;
-    role!: string
+    roleId!: string
+    role!:Role;
     roles!: Role[];
     permissions!: Permission[];
     isEditing!: boolean;
