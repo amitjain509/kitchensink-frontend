@@ -38,7 +38,6 @@ import { UserCreateComponent } from "./user-create/user-create.component";
     Button,
     Drawer,
     ToggleSwitchModule,
-    ReactiveFormsModule,
     // NgIf,
     Card,
     RouterLink,
@@ -51,35 +50,31 @@ import { UserCreateComponent } from "./user-create/user-create.component";
   styleUrl: './user.component.scss'
 })
 export class UserComponent implements OnInit, AfterViewInit {
+  public showDrawer: boolean;
+  public selectedRole: null;
+
   loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   user$: BehaviorSubject<Array<User>> = new BehaviorSubject<Array<User>>([]);
 
   roles!: Role[];
   permissions: string[] = [];
-  selectedUser = null;
+  selectedUser: User | null = null;
+  isEditMode = false;
 
   dataSource: any;
   users!: User[];
   editingIndex: number | null = null;
-  editForm: FormGroup;
-  public showDrawer: boolean;
-  public selectedRole: null;
 
   userType: any;
   searchControl = new FormControl('');
 
   constructor(
     private userService: UserService,
-    private fb: FormBuilder,
     private authService: AuthService,
     private roleService: RoleService,
     private confirmationService: ConfirmationService,
     private toastService: ToastService
   ) {
-    this.editForm = this.fb.group({
-      name: new FormControl('', Validators.required),
-      email: new FormControl('', [Validators.required, Validators.email])
-    });
     this.showDrawer = false;
     this.selectedRole = null;
 
@@ -149,32 +144,16 @@ export class UserComponent implements OnInit, AfterViewInit {
   }
 
   editUser(user: User) {
-    this.editForm.setValue({
-      name: user.name,
-      email: user.email
-    });
-  }
-
-  saveUser(index: number) {
-    if (this.editForm.valid) {
-      const updatedUser = { ...this.users[index], ...this.editForm.value };
-
-      this.userService.updateUser(updatedUser).subscribe({
-        next: (response) => {
-          this.users[index] = response; // Update UI with the saved data from the backend
-          this.editingIndex = null;
-          this.loadUsers(this.userType);
-          console.log("User updated successfully:", response);
-        },
-        error: (err) => {
-          console.error("Error updating user:", err);
-        }
-      });
-    }
+    this.selectedUser = user;
+    this.isEditMode = true; // Enable edit mode
+    this.showDrawer = true;
   }
 
   cancelEdit() {
+    this.isEditMode = false;
+    this.showDrawer = false;
     this.editingIndex = null;
+    this.selectedUser = null;
   }
 
   deleteUser(user: User) {

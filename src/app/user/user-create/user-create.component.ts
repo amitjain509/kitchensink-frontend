@@ -4,7 +4,7 @@ import { Role } from '../../_models/role.model';
 import { RoleService } from '../../_services/role.service';
 import { User } from '../../_models/user.model';
 import { UserService } from '../../_services/user.service';
-import { finalize } from 'rxjs';
+import { finalize, iif } from 'rxjs';
 import { find } from 'lodash-es';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -53,7 +53,7 @@ export class UserCreateComponent {
     this.user = null;
 
     this.userForm = this.fb.group({
-      id: [null],
+      userId: [null],
       name: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[A-Za-z][a-z]*(\\s[A-Za-z][a-z]*)*$')]],
       email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{3,}([._%+-][a-zA-Z0-9]+)*@[a-zA-Z0-9.-]{4,}\.[a-zA-Z]{2,}$')]],
       phoneNumber: ['', [Validators.required, Validators.pattern('^([\\s-]?)?[6-9]\\d{9}$')]],
@@ -92,15 +92,22 @@ export class UserCreateComponent {
     payload.role = this.selectedRole.roleId;
     payload.userType = 'USER'
 
-    this.userService.createUser(payload).pipe(
+    const request = iif(
+      () => !!payload.userId,
+      this.userService.updateUser(payload),
+      this.userService.createUser(payload)
+    );
+
+    request.pipe(
       finalize(() => {
         this.loading = false;
         this.userForm.enable();
-      })).subscribe({
+      }))
+      .subscribe({
         next: response => {
           const users = this.userComponent.user$.getValue();
           if (!!payload.userId) {
-            const user = find(users, ['id', payload.userId]);
+            const user = find(users, ['userId', payload.userId]);
             if (user) {
               Object.assign(user, response);
             }

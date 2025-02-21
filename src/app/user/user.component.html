@@ -110,6 +110,7 @@
     dismissible="false"
     position="right"
     styleClass="w-full md:w-[500px]"
+    (onHide)="onDrawerClose()"
   >
     <app-user-create (onClose)="onDrawerClose()" *ngIf="showDrawer" [user]="selectedUser" />
   </p-drawer>
