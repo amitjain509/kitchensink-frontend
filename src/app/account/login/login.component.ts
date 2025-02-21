@@ -55,7 +55,7 @@ export class LoginComponent {
           if (res.passwordResetRequired) {
             this._router.navigate(['/reset-password']);
           } else {
-            this._router.navigate(['/admin/access-control']);
+            this._router.navigate(['/main/dashboard']);
           }
         },
         error: err => {

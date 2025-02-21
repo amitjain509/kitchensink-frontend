@@ -58,7 +58,6 @@ export class UserComponent implements OnInit, AfterViewInit {
   permissions: string[] = [];
   selectedUser = null;
 
-  displayedColumns: string[] = ['name', 'email', 'phoneNumber', 'role', 'active', 'actions'];
   dataSource: any;
   users!: User[];
   editingIndex: number | null = null;
@@ -72,7 +71,6 @@ export class UserComponent implements OnInit, AfterViewInit {
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
-    private route: ActivatedRoute,
     private authService: AuthService,
     private roleService: RoleService,
     private confirmationService: ConfirmationService,

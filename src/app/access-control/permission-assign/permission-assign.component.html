@@ -25,7 +25,8 @@
                     {{ permission.permissionName }}
                 </td>
                 <td>
-                    <p-checkbox [(ngModel)]="permission.isAssigned" ></p-checkbox>
+                    <p-checkbox [(ngModel)]="permission.isAssigned" [binary]="true" (onChange)="onPermissionChange()"></p-checkbox>
+                    <!-- [disabled]="true" -->
                 </td>
             </tr>
         </ng-template>

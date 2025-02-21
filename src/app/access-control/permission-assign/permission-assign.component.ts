@@ -107,4 +107,8 @@ export class PermissionAssignComponent {
       this.permission$.next(updatedPermissions);
     });
   }
+
+  onPermissionChange() {
+    console.log(this.permission$.value.filter(p => p.isAssigned))
+  }
 }

@@ -31,20 +31,25 @@ export class SidebarComponent {
           {
             label: 'Users',
             icon: 'pi pi-users',
-            route: '/admin/user'
-          },
-          {
-            label: 'Exercise',
-            icon: 'pi pi-file-edit',
-            route: '/admin/exercise'
-          },
-          {
-            label: 'Aircraft Onboarding',
-            icon: 'pi pi-compass',
-            route: '/admin/aircraft'
+            route: '/main/user'
           }
         ]
       },
+      {
+        label: 'Access Management',
+        items: [
+          {
+            label: 'Roles',
+            icon: 'pi pi-users',
+            route: '/main/access-control/roles'
+          },
+          {
+            label: 'Permissions',
+            icon: 'pi pi-wrench',
+            route: '/main/access-control/permissions'
+          }
+        ]
+      }
       // {
       //   label: 'Users Management',
       //   items: [

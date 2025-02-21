@@ -1,0 +1,7 @@
+:ng-deep .p-datatable-mask {
+    @apply absolute rounded bg-white dark:bg-slate-950 opacity-75;
+    .p-datatable-loading-icon {
+      @apply text-primary h-8 w-8;
+    }
+  }
+  

@@ -34,7 +34,7 @@ export class AuthService extends BaseService {
     }
 
     getUserPermissions(): string[] {
-        const token = sessionStorage.getItem('token');
+        const token = localStorage.getItem('token');
         if (!token) return [];
 
         const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT
@@ -42,11 +42,11 @@ export class AuthService extends BaseService {
     }
 
     isAuthenticated(): boolean {
-        // Check if the session token exists in sessionStorage
-        return !!sessionStorage.getItem('token');
+        // Check if the session token exists in localStorage
+        return !!localStorage.getItem('token');
     }
 
     getToken() {
-        return sessionStorage.getItem('token');
+        return localStorage.getItem('token');
     }
 }
