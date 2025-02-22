@@ -5,9 +5,19 @@
 </div>
 
 <p-card>
-  <p-table [loading]="loading$ | async" [paginator]="true" [rows]="10" [showLoader]="false"
-    [value]="(user$ | async) ?? []" [rowsPerPageOptions]="[10, 20, 30]" responsiveLayout="scroll"
-    styleClass="p-datatable-striped">
+  <p-table 
+  [value]="(user$ | async) ?? []" 
+  [paginator]="true" 
+  [rows]="10"
+  [loading]="loading$ | async" 
+  [showLoader]="false"
+  [showCurrentPageReport]="true"
+  [rowsPerPageOptions]="[10, 20, 30]" 
+  [totalRecords]="user$.value.entries.length" 
+  currentPageReportTemplate="{first} - {last} of {totalRecords}"
+  responsiveLayout="scroll"
+  styleClass="p-datatable-striped">
+
     <ng-template pTemplate="loadingbody">
       <tr *appRepeat="15">
         <td *appRepeat="6">
@@ -55,7 +65,7 @@
           <p-button (click)="deleteUser(user)" [outlined]="true" icon="pi pi-trash" severity="danger"
             styleClass="action-button" *ngIf="hasPermission('USER_DELETE')"/>
           <p-button (click)="resetPassword(user)" [outlined]="true" icon="pi pi-lock" severity="danger"
-            styleClass="action-button" *ngIf="hasPermission('USER_RESET_PASSWORD')"/>
+            styleClass="action-button" *ngIf="hasPermission('USER_EDIT') && hasPermission('USER_RESET_PASSWORD')"/>
         </td>
       </tr>
     </ng-template>

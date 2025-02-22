@@ -226,7 +226,7 @@ export class UserComponent implements OnInit, AfterViewInit {
       next: () => {
         this.toastService.success('Password reset done successfully');
       },
-      error: () => this.toastService.success('Failed to reset user password')
+      error: () => this.toastService.success('Failed to reset your password')
     });;
   }
 

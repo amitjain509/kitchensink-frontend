@@ -93,7 +93,14 @@ export class RoleComponent {
         this.loadRoles();
         this.toastService.success('Role deleted successfully');
       },
-      error: () => this.toastService.success('Failed to delete role')
+      error: err => {
+          if (err.status === 424) {
+            this.toastService.error(
+              'Unable to delete Role',
+              'Role associated with users'
+            );
+          }
+        }
     });
   }
 

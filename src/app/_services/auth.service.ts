@@ -13,22 +13,16 @@ export class AuthService extends BaseService {
     private router = inject(Router);
 
     resetPassword(password: Password) {
-        return this.post(`${this.apiUrl}/auth/reset-password`, password).pipe(
-            catchError(this.handleError)
-        );
+        return this.post(`${this.apiUrl}/auth/reset-password`, password);
     }
 
     expirePassword(email: string) {
-        return this.put(`${this.apiUrl}/auth/reset-password/${email}`, null).pipe(
-            catchError(this.handleError)
-        );
+        return this.put(`${this.apiUrl}/auth/reset-password/${email}`, null);
     }
 
 
     assignRole(userId: string, roles: string[]) {
-        return this.patch(`${this.apiUrl}/users/${userId}`, roles).pipe(
-            catchError(this.handleError)
-        );
+        return this.patch(`${this.apiUrl}/users/${userId}`, roles);
     }
 
     auth(payload: AuthModel): Observable<UserData> {

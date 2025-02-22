@@ -10,8 +10,6 @@ export class PermissionService extends BaseService {
     private apiUrl = environment.apiUrl;
 
     getAllPermissions() {
-        return this.get<Permission[]>(`${this.apiUrl}/permissions`).pipe(
-            catchError(this.handleError)
-        );
+        return this.get<Permission[]>(`${this.apiUrl}/permissions`);
     }
 }

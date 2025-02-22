@@ -61,9 +61,11 @@ export class ResetPasswordComponent {
       .resetPassword(payload)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
-        next: res => {
+        next: () => {
+          this._toastService.success('Password reset done successfully');
           this._router.navigate(['/account/login']);
-        }
+        },
+        error: () => this._toastService.success('Failed to reset user password')
       });
   }
 }

@@ -1,12 +1,13 @@
-<div class="flex sm:flex-row flex-col sm:justify-between sm:items-center items-start sm:gap-0 gap-y-2.5 mb-5">
+<div class="flex sm:flex-row flex-col sm:justify-end sm:items-center items-start sm:gap-0 gap-y-2.5 mb-5">
     <p-button (onClick)="showDrawer = true" icon="pi pi-plus" label="Add Role" severity="contrast"
         styleClass="px-3 py-2" variant="outlined" *ngIf="hasPermission('ROLE_CREATE')" />
 </div>
 
 <p-card>
-    <p-table [loading]="loading$ | async" [paginator]="true" [rows]="10" [showLoader]="false"
-        [value]="(role$ | async) ?? []" [rowsPerPageOptions]="[10, 20, 30]" responsiveLayout="scroll"
-        styleClass="p-datatable-striped">
+    <p-table [value]="(role$ | async) ?? []" [paginator]="true" [rows]="10" [loading]="loading$ | async"
+        [showLoader]="false" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 30]"
+        [totalRecords]="role$.value.entries.length" currentPageReportTemplate="{first} - {last} of {totalRecords}"
+        responsiveLayout="scroll" styleClass="p-datatable-striped">
         <ng-template pTemplate="loadingbody">
             <tr *appRepeat="15">
                 <td *appRepeat="6">
@@ -28,10 +29,12 @@
                         {{ role.roleName }}
                     </a>
                 </td>
-                <td [style]="{'white-space': 'normal', 'word-break': 'break-word', 'max-width': '40px'}">{{ role.roleDescription }}</td>
+                <td [style]="{'white-space': 'normal', 'word-break': 'break-word', 'max-width': '40px'}">{{
+                    role.roleDescription }}</td>
                 <td class="flex gap-3">
                     <p-button (click)="deleteRole(role)" [outlined]="true" icon="pi pi-trash" severity="danger"
-                        styleClass="action-button" [disabled]="!hasPermission('ROLE_DELETE')"/>
+                        styleClass="action-button"
+                        [disabled]="role.roleName.includes('DEFAULT') || !hasPermission('ROLE_DELETE')" />
                 </td>
             </tr>
         </ng-template>
@@ -47,5 +50,5 @@
 
 <p-drawer [(visible)]="showDrawer" [header]="'Create Role'" blockScroll="true" closeOnEscape="false" dismissible="false"
     position="right" styleClass="w-full md:w-[500px]" (onHide)="onDrawerClose()">
-    <app-role-create (onClose)="onDrawerClose()" *ngIf="showDrawer"/>
+    <app-role-create (onClose)="onDrawerClose()" *ngIf="showDrawer" />
 </p-drawer>

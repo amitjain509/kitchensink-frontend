@@ -10,36 +10,26 @@ export class RoleService extends BaseService {
     private apiUrl = environment.apiUrl;
 
     createRole(role: Role) {
-        return this.post<Role>(`${this.apiUrl}/roles`, role).pipe(
-            catchError(this.handleError)
-        );
+        return this.post<Role>(`${this.apiUrl}/roles`, role);
     }
 
 
     deleteRole(role: Role) {
-        return this.delete(`${this.apiUrl}/roles/${role.roleId}`).pipe(
-            catchError(this.handleError)
-        );
+        return this.delete(`${this.apiUrl}/roles/${role.roleId}`);
     }
 
     getAllRoles() {
-        return this.get<Role[]>(`${this.apiUrl}/roles`).pipe(
-            catchError(this.handleError)
-        );
+        return this.get<Role[]>(`${this.apiUrl}/roles`);
     }
 
     getRoleById(roleId: string) {
-        return this.get<Role>(`${this.apiUrl}/roles/${roleId}`).pipe(
-            catchError(this.handleError)
-        );
+        return this.get<Role>(`${this.apiUrl}/roles/${roleId}`);
     }
 
     assignPermissions(roleId:string, permissions: string[]) {
         return this.put(`${this.apiUrl}/roles/${roleId}/assign-permissions`, {
             roleId: roleId,
             permissions: permissions
-        }).pipe(
-            catchError(this.handleError)
-        );
+        });
     }
 }
