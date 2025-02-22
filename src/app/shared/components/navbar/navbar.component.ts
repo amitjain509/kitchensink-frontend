@@ -61,10 +61,6 @@ export class NavbarComponent implements OnInit {
 
     this.items = [
       {
-        label: this.loggedUserName,
-        icon: 'pi pi-user',
-      },
-      {
         label: 'Log Out',
         icon: 'pi pi-sign-out',
         command: () => this._logout()

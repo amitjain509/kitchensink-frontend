@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "aircraftly": {
+    "kitchensink": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/aircraftly",
+            "outputPath": "dist/kitchensink",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -92,13 +92,13 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "aircraftly:build:production"
+              "buildTarget": "kitchensink:build:production"
             },
             "development": {
-              "buildTarget": "aircraftly:build:development"
+              "buildTarget": "kitchensink:build:development"
             },
             "staging": {
-              "buildTarget": "aircraftly:build:staging"
+              "buildTarget": "kitchensink:build:staging"
             }
           },
           "options": {

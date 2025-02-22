@@ -23,7 +23,7 @@ export class UserService extends BaseService {
     }
 
     getUserByEmail(email: string) {
-        return this.get(`${this.apiUrl}/users/${email}`);
+        return this.get<User>(`${this.apiUrl}/users/${email}`);
     }
 
     getAllUsers(userType: string) {

@@ -1,29 +1,60 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Card } from 'primeng/card';
-import { DashboardData } from '../../_models/dashboard.model';
+import { Avatar } from 'primeng/avatar';
+import { TableModule } from 'primeng/table';
+import { UserService } from '../../_services/user.service';
+import { User } from '../../_models/user.model';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
     CommonModule,
-    Card
+    TableModule,
+    ReactiveFormsModule,
+    FormsModule,
+    Card,
+    Avatar
 ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
-  dashboardData: DashboardData | null = null;
+  userData: User | null = null;
 
-  constructor() {
-    
+  editMode = {
+    name: false,
+    phoneNumber: false,
+  };
+
+  constructor(private userService: UserService) {
+
   }
 
   ngOnInit() {
-    this.dashboardData = {
-      email: localStorage.getItem('email') != null ?localStorage.getItem('email') : '',
-      name: localStorage.getItem('name'),
-      role: ''
-    } 
+    this._loadUser();
+  }
+
+  toggleEdit(field: 'name' | 'phoneNumber') {
+    this.editMode[field] = !this.editMode[field];
+  }
+
+  saveEdit(field: 'name' | 'phoneNumber') {
+    this.editMode[field] = false; // Exit edit mode after saving
+  }
+
+  saveUserData() {
+    console.log("Updated User Data:", this.userData);
+    // Implement API call here to save the updated user data
+  }
+
+  _loadUser() {
+    this.userService.getUserByEmail(localStorage.getItem('email') ?? '')
+      .subscribe({
+        next: res => {
+          this.userData = res;
+        }
+      });
   }
 }

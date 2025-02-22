@@ -20,3 +20,15 @@
 .time-ring {
   @apply w-16 p-0.5 text-[10px] text-center rounded left-2 -top-3 absolute text-primary bg-blue-200 dark:bg-blue-800;
 }
+
+
+.custom-avatar {
+  width: 120px !important;
+  height: 120px !important;
+}
+
+.p-inputtext {
+  background-color: transparent !important;  // Match your theme background
+  color: inherit !important;  // Ensure text color matches the theme
+  border: none;
+}
