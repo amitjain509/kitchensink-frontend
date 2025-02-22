@@ -130,9 +130,7 @@ export class UserCreateComponent {
           this.onClose.emit();
         },
         error: response => {
-          const message =
-            response['debug-message'] || `User ${!!payload.userId ? 'updation' : 'creation'} failed`;
-          this.toastService.error(new TitleCasePipe().transform(message));
+          this.toastService.error(new TitleCasePipe().transform(response.message));
         }
       });;
   }

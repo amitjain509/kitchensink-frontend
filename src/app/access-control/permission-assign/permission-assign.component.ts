@@ -157,9 +157,7 @@ export class PermissionAssignComponent {
           }
         },
         error: response => {
-          const message =
-            response['debug-message'] || `Permission linking failed`;
-          this.toastService.error(new TitleCasePipe().transform(message));
+          this.toastService.error(new TitleCasePipe().transform(response.message));
         }
       });
   }
