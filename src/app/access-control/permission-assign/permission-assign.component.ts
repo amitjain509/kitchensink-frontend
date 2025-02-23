@@ -56,7 +56,7 @@ export class PermissionAssignComponent {
   loading: boolean;
 
   public showDrawer: boolean;
-  selectedRole!: Role;
+  selectedRole: Role | null = null;
   roles!: Role[];
 
   constructor(
@@ -103,7 +103,8 @@ export class PermissionAssignComponent {
   }
 
   onRoleChange(): void {
-    this.updateCheckedPermissions(this.selectedRole.roleId);
+    if(this.selectedRole)
+      this.updateCheckedPermissions(this.selectedRole.roleId);
   }
 
   updateCheckedPermissions(roleId: string): void {
@@ -136,6 +137,13 @@ export class PermissionAssignComponent {
     });
   }
 
+  onReset() {
+    this.loading = true;
+    if(this.selectedRole)
+      this.updateCheckedPermissions(this.selectedRole.roleId);
+    this.loading = false;
+  }
+
   _linkPermission() {
     if (!this.selectedRole) {
       console.warn("No role selected!");
@@ -163,6 +171,10 @@ export class PermissionAssignComponent {
   }
 
   _isLoggedInUserPermissionModified(assignedPermissionNames: string[]) {
+    if(!this.selectedRole) {
+      return;
+    }
+
     if (!JSON.parse(localStorage.getItem('roles')??'').includes(this.selectedRole.roleName)) {
       return false;
     }

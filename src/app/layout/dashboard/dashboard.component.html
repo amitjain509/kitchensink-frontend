@@ -10,9 +10,17 @@
 
     <p-card [style]="{ width: '170%', height: '300px', overflow: 'hidden', padding: '20px' }" class="flex flex-col">
         <div class="grid grid-cols-2 gap-y-3" *ngIf="userData">
-            <div>Full Name:</div>
-            <div>
-                <input type="text" class="p-inputtext w-full" [disabled]="true" [(ngModel)]="userData.name">
+            <!-- Full Name -->
+            <div class="flex items-center">
+                <span>Full Name:</span>
+            </div>
+            <div class="flex items-center">
+                <input type="text" class="p-inputtext w-full" 
+                    [ngClass]="{ 'editable-field': isEditingName }"
+                    [disabled]="!isEditingName" [(ngModel)]="userData.name">
+                <button pButton class="p-button-text p-2 ml-2" (click)="toggleEdit('name')">
+                    <i class="pi" [ngClass]="isEditingName ? 'pi-check text-green-500' : 'pi-pencil'"></i>
+                </button>
             </div>
             <div class="col-span-2">
                 <hr class="border-gray-500 my-2">
@@ -25,10 +33,18 @@
             <div class="col-span-2">
                 <hr class="border-gray-500 my-2">
             </div>
-
-            <div>Phone Number:</div>
-            <div>
-                <input type="text" class="p-inputtext w-full" [disabled]="true" [(ngModel)]="userData.phoneNumber">
+    
+            <!-- Phone Number -->
+            <div class="flex items-center">
+                <span>Phone Number:</span>
+            </div>
+            <div class="flex items-center">
+                <input type="text" class="p-inputtext w-full" 
+                    [ngClass]="{ 'editable-field': isEditingPhone }"
+                    [disabled]="!isEditingPhone" [(ngModel)]="userData.phoneNumber">
+                <button pButton class="p-button-text p-2 ml-2" (click)="toggleEdit('phoneNumber')">
+                    <i class="pi" [ngClass]="isEditingPhone ? 'pi-check text-green-500' : 'pi-pencil'"></i>
+                </button>
             </div>
             <div class="col-span-2">
                 <hr class="border-gray-500 my-2">

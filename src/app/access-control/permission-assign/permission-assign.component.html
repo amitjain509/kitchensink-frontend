@@ -45,6 +45,9 @@
     </p-card>
     <div class="flex gap-x-5 mt-auto justify-center">
         <p-button (onClick)="onSubmit()" [loading]="loading" label="Save" loadingIcon="pi pi-spin pi-spinner"
-            styleClass="p-button-lg px-6 py-3 text-md m-3" [disabled]="!selectedRole || !hasPermission('ROLE_EDIT')" />
+            styleClass="p-button-lg px-6 py-1 text-md m-3" [disabled]="!selectedRole || !hasPermission('ROLE_EDIT')" />
+        <p-button (onClick)="onReset()" [loading]="loading" label="Reset" loadingIcon="pi pi-spin pi-spinner"
+            styleClass="p-button-lg px-6 py-1 text-md m-3" [disabled]="!selectedRole || !hasPermission('ROLE_EDIT')" />
+
     </div>
 </div>

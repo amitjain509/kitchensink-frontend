@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Card } from 'primeng/card';
 import { Avatar } from 'primeng/avatar';
@@ -6,6 +6,7 @@ import { TableModule } from 'primeng/table';
 import { UserService } from '../../_services/user.service';
 import { User } from '../../_models/user.model';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastService } from '../../shared/services';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,37 +17,61 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     Card,
     Avatar
-],
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
   userData: User | null = null;
+  isEditingName = false;
+  isEditingPhone = false;
 
   editMode = {
     name: false,
     phoneNumber: false,
   };
 
-  constructor(private userService: UserService) {
-
+  constructor(private userService: UserService,
+    private toastService: ToastService) {
+      
   }
 
   ngOnInit() {
     this._loadUser();
   }
 
-  toggleEdit(field: 'name' | 'phoneNumber') {
-    this.editMode[field] = !this.editMode[field];
+  toggleEdit(field: string) {
+    if (field === 'name') {
+      if (this.isEditingName) {
+        this.saveEdit('name');
+      }
+      this.isEditingName = !this.isEditingName;
+    } else if (field === 'phoneNumber') {
+      if (this.isEditingPhone) {
+        this.saveEdit('phoneNumber');
+      }
+      this.isEditingPhone = !this.isEditingPhone;
+    }
   }
+
 
   saveEdit(field: 'name' | 'phoneNumber') {
-    this.editMode[field] = false; // Exit edit mode after saving
-  }
-
-  saveUserData() {
-    console.log("Updated User Data:", this.userData);
-    // Implement API call here to save the updated user data
+    if (!this.userData) {
+      return;
+    }
+    
+    this.userData.roleId = this.userData?.roles[0].roleId;
+    this.userService.updateUser(this.userData)
+      .subscribe({
+        next: response => {
+          this.userData = response;
+          this.editMode[field] = false;
+          this.toastService.success(`User updated successfully`);
+        },
+        error: response => {
+          this.toastService.error(new TitleCasePipe().transform(response.message));
+        }
+      });;
   }
 
   _loadUser() {

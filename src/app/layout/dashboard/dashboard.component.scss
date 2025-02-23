@@ -32,3 +32,11 @@
   color: inherit !important;  // Ensure text color matches the theme
   border: none;
 }
+
+
+.editable-field {
+  background-color: #c0dbfd !important;
+  border: 1px solid #4a90e2;
+  transition: background-color 0.3s ease, border 0.3s ease;
+  color: black !important;
+}
