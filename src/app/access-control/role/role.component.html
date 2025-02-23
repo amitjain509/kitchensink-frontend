@@ -5,7 +5,7 @@
 
 <p-card>
     <p-table [value]="(role$ | async) ?? []" [paginator]="true" [rows]="10" [loading]="loading$ | async"
-        [showLoader]="false" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 30]"
+        [showLoader]="false" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20]"
         [totalRecords]="role$.value.entries.length" currentPageReportTemplate="{first} - {last} of {totalRecords}"
         responsiveLayout="scroll" styleClass="p-datatable-striped">
         <ng-template pTemplate="loadingbody">

@@ -58,7 +58,7 @@ export class LoginComponent {
           }
         },
         error: err => {
-          if (err.status === 401) {
+          if (err.status === 401 || err.status === 404) {
             this._toastService.error(
               'Invalid Credentials',
               'Please check your email and password and try again'
