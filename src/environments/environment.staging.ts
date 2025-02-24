@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
   name: 'staging',
-  apiUrl: '',
+  apiUrl: 'https://demo.kitchensink.com/api',
   loggingEnabled: true
 };

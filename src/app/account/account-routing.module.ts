@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AccountComponent } from './account.component';
 import { LoginComponent } from './login/login.component';
-import { AuthGuard } from '../shared/guards/auth.guard';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { AuthLoginGuard } from '../shared/guards/authlogin.guard';
 
 const routes: Routes = [
   {
     path: '',
+    canActivate: [AuthLoginGuard],
     component: AccountComponent,
     children: [
       {
