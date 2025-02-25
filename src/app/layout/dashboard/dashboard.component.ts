@@ -7,6 +7,7 @@ import { UserService } from '../../_services/user.service';
 import { User } from '../../_models/user.model';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastService } from '../../shared/services';
+import { AuthService } from '../../_services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,18 +26,22 @@ export class DashboardComponent {
   userData: User | null = null;
   isEditingName = false;
   isEditingPhone = false;
+  permissions: string[] = [];
 
   editMode = {
     name: false,
     phoneNumber: false,
   };
 
-  constructor(private userService: UserService,
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
     private toastService: ToastService) {
       
   }
 
   ngOnInit() {
+    this.permissions = this.authService.getUserPermissions();
     this._loadUser();
   }
 
@@ -81,5 +86,9 @@ export class DashboardComponent {
           this.userData = res;
         }
       });
+  }
+
+  hasPermission(permission: string): boolean {
+    return this.permissions.includes(permission);
   }
 }

@@ -93,6 +93,7 @@ export class NavbarComponent implements OnInit {
   }
 
   private _logout(): void {
+    localStorage.clear();
     this.router.navigate(['/account/login']).then(() => localStorage.removeItem('token'));
   }
 }

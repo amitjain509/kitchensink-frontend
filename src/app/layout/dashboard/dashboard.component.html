@@ -1,4 +1,4 @@
-<div class="flex flex-col md:flex-row gap-6">
+<div class="flex flex-col md:flex-row gap-6" *ngIf="hasPermission('USER_PROFILE_VIEW')">
     <p-card [style]="{ width: '350px', height: '300px', overflow: 'hidden', padding: '20px' }"
         class="flex flex-col items-start text-center">
         <p-avatar label="A" class="mb-3 custom-avatar" size="xlarge" shape="circle" />
@@ -18,7 +18,7 @@
                 <input type="text" class="p-inputtext w-full" 
                     [ngClass]="{ 'editable-field': isEditingName }"
                     [disabled]="!isEditingName" [(ngModel)]="userData.name">
-                <button pButton class="p-button-text p-2 ml-2" (click)="toggleEdit('name')">
+                <button pButton class="p-button-text p-2 ml-2" (click)="toggleEdit('name')" [disabled]="!hasPermission('USER_PROFILE_EDIT')">
                     <i class="pi" [ngClass]="isEditingName ? 'pi-check text-green-500' : 'pi-pencil'"></i>
                 </button>
             </div>
@@ -42,7 +42,7 @@
                 <input type="text" class="p-inputtext w-full" 
                     [ngClass]="{ 'editable-field': isEditingPhone }"
                     [disabled]="!isEditingPhone" [(ngModel)]="userData.phoneNumber">
-                <button pButton class="p-button-text p-2 ml-2" (click)="toggleEdit('phoneNumber')">
+                <button pButton class="p-button-text p-2 ml-2" (click)="toggleEdit('phoneNumber')" [disabled]="!hasPermission('USER_PROFILE_EDIT')">
                     <i class="pi" [ngClass]="isEditingPhone ? 'pi-check text-green-500' : 'pi-pencil'"></i>
                 </button>
             </div>
